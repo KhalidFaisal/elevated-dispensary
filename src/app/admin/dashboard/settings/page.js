@@ -1,0 +1,342 @@
+'use client';
+
+import { useState, useEffect, useMemo } from 'react';
+
+export default function SettingsPage() {
+  const [password, setPassword] = useState('');
+  const [confirm, setConfirm] = useState('');
+  
+  const [adminPassword, setAdminPassword] = useState('');
+  const [adminConfirm, setAdminConfirm] = useState('');
+
+  const [currentPassword, setCurrentPassword] = useState('Holymoly');
+  
+  const [loadingSite, setLoadingSite] = useState(false);
+  const [messageSite, setMessageSite] = useState('');
+
+  const [loadingAdmin, setLoadingAdmin] = useState(false);
+  const [messageAdmin, setMessageAdmin] = useState('');
+
+  const [timezone, setTimezone] = useState('');
+  const [currentTimezone, setCurrentTimezone] = useState('UTC');
+  const [loadingTimezone, setLoadingTimezone] = useState(false);
+  const [messageTimezone, setMessageTimezone] = useState('');
+
+  const timezones = useMemo(() => {
+    if (typeof Intl === 'undefined' || !Intl.supportedValuesOf) return [];
+    const tzs = Intl.supportedValuesOf('timeZone');
+    const date = new Date();
+    
+    return tzs.map(tz => {
+      let offsetStr = '';
+      let offsetValue = 0;
+      try {
+        const format = new Intl.DateTimeFormat('en-US', { timeZone: tz, timeZoneName: 'shortOffset' });
+        const parts = format.formatToParts(date);
+        const offsetPart = parts.find(p => p.type === 'timeZoneName')?.value || '';
+        offsetStr = offsetPart.replace('GMT', 'UTC');
+        
+        const tzDate = new Date(date.toLocaleString('en-US', { timeZone: tz }));
+        const utcDate = new Date(date.toLocaleString('en-US', { timeZone: 'UTC' }));
+        offsetValue = tzDate.getTime() - utcDate.getTime();
+      } catch(e) {}
+      
+      return { 
+        name: tz, 
+        label: `${offsetStr ? `(${offsetStr}) ` : ''}${tz.replace(/_/g, ' ')}`, 
+        offsetValue 
+      };
+    }).sort((a, b) => a.offsetValue - b.offsetValue);
+  }, []);
+
+  useEffect(() => {
+    async function fetchSettings() {
+      try {
+        const res = await fetch('/api/admin/settings', {
+          headers: { 'Authorization': `Bearer ${localStorage.getItem('admin_token')}` }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.sitePassword) setCurrentPassword(data.sitePassword);
+          if (data.timezone) {
+            setCurrentTimezone(data.timezone);
+            setTimezone(data.timezone);
+          }
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    fetchSettings();
+  }, []);
+
+  const handleAutoDetectTimezone = () => {
+    try {
+      const detected = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      if (detected) {
+        setTimezone(detected);
+      }
+    } catch (e) {
+      console.error('Could not detect timezone', e);
+    }
+  };
+
+  const handleTimezoneSubmit = async (e) => {
+    e.preventDefault();
+    setLoadingTimezone(true);
+    setMessageTimezone('');
+
+    try {
+      const res = await fetch('/api/admin/settings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+        },
+        body: JSON.stringify({ timezone }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setMessageTimezone('Timezone updated successfully.');
+        setCurrentTimezone(data.timezone || timezone);
+      } else {
+        const data = await res.json();
+        setMessageTimezone(data.error || 'Failed to update settings.');
+      }
+    } catch (err) {
+      setMessageTimezone('An error occurred.');
+    } finally {
+      setLoadingTimezone(false);
+    }
+  };
+
+  const handleSiteSubmit = async (e) => {
+    e.preventDefault();
+    if (password !== confirm) {
+      setMessageSite('Passwords do not match.');
+      return;
+    }
+
+    setLoadingSite(true);
+    setMessageSite('');
+
+    try {
+      const res = await fetch('/api/admin/settings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+        },
+        body: JSON.stringify({ sitePassword: password }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setMessageSite('Site password updated successfully.');
+        setCurrentPassword(data.sitePassword);
+        setPassword('');
+        setConfirm('');
+      } else {
+        const data = await res.json();
+        setMessageSite(data.error || 'Failed to update settings.');
+      }
+    } catch (err) {
+      setMessageSite('An error occurred.');
+    } finally {
+      setLoadingSite(false);
+    }
+  };
+
+  const handleAdminSubmit = async (e) => {
+    e.preventDefault();
+    if (adminPassword !== adminConfirm) {
+      setMessageAdmin('Passwords do not match.');
+      return;
+    }
+
+    setLoadingAdmin(true);
+    setMessageAdmin('');
+
+    try {
+      const res = await fetch('/api/admin/settings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+        },
+        body: JSON.stringify({ adminPassword: adminPassword }),
+      });
+
+      if (res.ok) {
+        setMessageAdmin('Admin password updated successfully.');
+        setAdminPassword('');
+        setAdminConfirm('');
+      } else {
+        const data = await res.json();
+        setMessageAdmin(data.error || 'Failed to update settings.');
+      }
+    } catch (err) {
+      setMessageAdmin('An error occurred.');
+    } finally {
+      setLoadingAdmin(false);
+    }
+  };
+
+  return (
+    <div className="max-w-6xl mx-auto space-y-8 animate-fade-in pb-12">
+      <div className="flex justify-between items-end">
+        <div>
+          <h1 className="text-3xl font-bold text-white mb-2">Settings</h1>
+          <p className="text-elevated-muted">Manage global site settings.</p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+      <div className="bg-elevated-dark border border-elevated-border rounded-2xl p-6">
+        <h2 className="text-xl font-semibold text-white mb-4">Site Access Password</h2>
+        <p className="text-elevated-muted mb-6 text-sm">
+          Change the password required for users to enter the site. The current password is <span className="text-elevated-emerald font-bold font-mono px-1">{currentPassword}</span>.
+        </p>
+
+        <form onSubmit={handleSiteSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-elevated-muted mb-1">New Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full bg-elevated-black border border-elevated-border rounded-xl px-4 py-2 text-white focus:outline-none focus:border-elevated-emerald"
+              required
+              minLength={4}
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-elevated-muted mb-1">Confirm Password</label>
+            <input
+              type="password"
+              value={confirm}
+              onChange={(e) => setConfirm(e.target.value)}
+              className="w-full bg-elevated-black border border-elevated-border rounded-xl px-4 py-2 text-white focus:outline-none focus:border-elevated-emerald"
+              required
+              minLength={4}
+            />
+          </div>
+
+          {messageSite && (
+            <div className={`p-3 rounded-lg text-sm ${messageSite.includes('success') ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}`}>
+              {messageSite}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={loadingSite}
+            className="btn-primary w-full py-3"
+          >
+            {loadingSite ? 'Saving...' : 'Update Site Password'}
+          </button>
+        </form>
+      </div>
+
+      <div className="bg-elevated-dark border border-elevated-border rounded-2xl p-6">
+        <h2 className="text-xl font-semibold text-white mb-4">Admin Dashboard Password</h2>
+        <p className="text-elevated-muted mb-6 text-sm">
+          Change the password you use to log into this admin dashboard.
+        </p>
+
+        <form onSubmit={handleAdminSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-elevated-muted mb-1">New Admin Password</label>
+            <input
+              type="password"
+              value={adminPassword}
+              onChange={(e) => setAdminPassword(e.target.value)}
+              className="w-full bg-elevated-black border border-elevated-border rounded-xl px-4 py-2 text-white focus:outline-none focus:border-elevated-emerald"
+              required
+              minLength={4}
+            />
+          </div>
+          
+          <div>
+            <label className="block text-sm font-medium text-elevated-muted mb-1">Confirm Admin Password</label>
+            <input
+              type="password"
+              value={adminConfirm}
+              onChange={(e) => setAdminConfirm(e.target.value)}
+              className="w-full bg-elevated-black border border-elevated-border rounded-xl px-4 py-2 text-white focus:outline-none focus:border-elevated-emerald"
+              required
+              minLength={4}
+            />
+          </div>
+
+          {messageAdmin && (
+            <div className={`p-3 rounded-lg text-sm ${messageAdmin.includes('success') ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}`}>
+              {messageAdmin}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={loadingAdmin}
+            className="btn-secondary w-full py-3"
+          >
+            {loadingAdmin ? 'Saving...' : 'Update Admin Password'}
+          </button>
+        </form>
+      </div>
+
+      {/* Timezone Section */}
+      <div className="bg-elevated-dark border border-elevated-border rounded-2xl p-6 lg:col-span-2">
+        <h2 className="text-xl font-semibold text-white mb-4">Timezone</h2>
+        <p className="text-elevated-muted mb-6 text-sm">
+          Set the global timezone for your store. This affects how dates and times are displayed.
+          The current timezone is <span className="text-elevated-emerald font-bold font-mono px-1">{currentTimezone}</span>.
+        </p>
+
+        <form onSubmit={handleTimezoneSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-elevated-muted mb-1">Store Timezone (IANA Format)</label>
+            <div className="flex gap-2">
+              <select
+                value={timezone}
+                onChange={(e) => setTimezone(e.target.value)}
+                className="flex-1 bg-elevated-black border border-elevated-border rounded-xl px-4 py-2 text-white focus:outline-none focus:border-elevated-emerald appearance-none"
+                required
+              >
+                <option value="" disabled>Select a timezone...</option>
+                {timezones.map(tz => (
+                  <option key={tz.name} value={tz.name}>{tz.label}</option>
+                ))}
+              </select>
+              <button
+                type="button"
+                onClick={handleAutoDetectTimezone}
+                className="px-4 py-2 bg-elevated-emerald/10 text-elevated-emerald hover:bg-elevated-emerald hover:text-elevated-black rounded-xl text-sm font-bold transition-all whitespace-nowrap"
+              >
+                Auto-Detect
+              </button>
+            </div>
+          </div>
+
+          {messageTimezone && (
+            <div className={`p-3 rounded-lg text-sm ${messageTimezone.includes('success') ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}`}>
+              {messageTimezone}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={loadingTimezone}
+            className="btn-primary w-full py-3"
+          >
+            {loadingTimezone ? 'Saving...' : 'Update Timezone'}
+          </button>
+        </form>
+      </div>
+      </div>
+    </div>
+  );
+}

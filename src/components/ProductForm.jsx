@@ -1,0 +1,232 @@
+'use client';
+
+import { useState } from 'react';
+
+export default function ProductForm({ product, token, onSave, onCancel }) {
+  const isEdit = !!product;
+
+  const [form, setForm] = useState({
+    name: product?.name || '',
+    category: product?.category || 'FLOWER',
+    price: product?.price || '',
+    weight: product?.weight || '',
+    description: product?.description || '',
+    image: product?.image || '',
+    stock: product?.stock || '',
+    featured: product?.featured || false,
+    isVisible: product?.isVisible ?? true,
+  });
+
+  const [images, setImages] = useState(() => {
+    try {
+      return JSON.parse(product?.images || '[]');
+    } catch {
+      return product?.image ? [product.image] : [];
+    }
+  });
+
+  const [newUrl, setNewUrl] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+  };
+
+  const handleAddUrl = () => {
+    if (newUrl.trim()) {
+      setImages(prev => [...prev, newUrl.trim()]);
+      setNewUrl('');
+    }
+  };
+
+  const handleRemoveImage = (index) => {
+    setImages(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleImageUpload = async (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length === 0) return;
+
+    setUploading(true);
+    setError('');
+
+    try {
+      const newUploads = [];
+      for (const file of files) {
+        const formData = new FormData();
+        formData.append('file', file);
+        const res = await fetch('/api/upload', {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}` },
+          body: formData,
+        });
+        if (!res.ok) throw new Error('Upload failed');
+        const data = await res.json();
+        newUploads.push(data.url);
+      }
+      setImages(prev => [...prev, ...newUploads]);
+    } catch (err) {
+      setError('Image upload failed. Please try again.');
+    } finally {
+      setUploading(false);
+      e.target.value = ''; // Reset input
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSaving(true);
+    setError('');
+
+    try {
+      const url = isEdit ? `/api/products/${product.id}` : '/api/products';
+      const method = isEdit ? 'PUT' : 'POST';
+
+      const res = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ ...form, images }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Failed to save product');
+      }
+
+      const saved = await res.json();
+      onSave(saved);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
+      <div className="glass-card w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6">
+        <h2 className="text-2xl font-bold text-white mb-6">
+          {isEdit ? 'Edit Product' : 'Add New Product'}
+        </h2>
+
+        {error && (
+          <div className="bg-red-500/10 border border-red-500/30 text-red-400 p-3 rounded-xl mb-4 text-sm">
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Name */}
+          <div>
+            <label className="block text-sm font-medium text-elevated-muted mb-1">Product Name *</label>
+            <input name="name" value={form.name} onChange={handleChange} required className="input-field" placeholder="e.g. OG Kush" />
+          </div>
+
+          {/* Category */}
+          <div>
+            <label className="block text-sm font-medium text-elevated-muted mb-1">Category *</label>
+            <select name="category" value={form.category} onChange={handleChange} className="select-field">
+              <option value="FLOWER">Flower</option>
+              <option value="EDIBLE">Edible</option>
+            </select>
+          </div>
+
+          {/* Price / Weight / Stock */}
+          <div className="grid grid-cols-3 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-elevated-muted mb-1">Price ($) *</label>
+              <input name="price" type="number" step="0.01" value={form.price} onChange={handleChange} required className="input-field" placeholder="35.00" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-elevated-muted mb-1">Weight/Size (Optional)</label>
+              <input name="weight" value={form.weight} onChange={handleChange} className="input-field" placeholder="3.5g, 1pc" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-elevated-muted mb-1">Stock *</label>
+              <input name="stock" type="number" value={form.stock} onChange={handleChange} required className="input-field" placeholder="100" />
+            </div>
+          </div>
+
+          {/* Description */}
+          <div>
+            <label className="block text-sm font-medium text-elevated-muted mb-1">Description</label>
+            <textarea name="description" value={form.description} onChange={handleChange} rows={3} className="input-field resize-none" placeholder="Describe this product..." />
+          </div>
+
+          {/* Image Gallery */}
+          <div>
+            <label className="block text-sm font-medium text-elevated-muted mb-2">Product Images (First image is primary)</label>
+            
+            <div className="flex gap-2 mb-4">
+              <input 
+                type="url" 
+                value={newUrl} 
+                onChange={(e) => setNewUrl(e.target.value)} 
+                className="input-field flex-1" 
+                placeholder="Paste image URL here..." 
+              />
+              <button type="button" onClick={handleAddUrl} className="btn-secondary whitespace-nowrap">Add URL</button>
+            </div>
+
+            <label className={`block border-2 border-dashed border-elevated-border rounded-xl p-4 text-center cursor-pointer hover:border-elevated-emerald/50 transition-colors mb-4 ${uploading ? 'opacity-50 pointer-events-none' : ''}`}>
+              <input type="file" accept="image/*" multiple onChange={handleImageUpload} className="hidden" />
+              <p className="text-elevated-muted text-sm">
+                {uploading ? 'Uploading...' : 'Or click to upload files (can select multiple)'}
+              </p>
+            </label>
+
+            {images.length > 0 && (
+              <div className="grid grid-cols-4 gap-3">
+                {images.map((img, i) => (
+                  <div key={i} className="relative aspect-square rounded-xl overflow-hidden bg-elevated-smoke group">
+                    <img src={img} alt={`Gallery ${i+1}`} className="w-full h-full object-cover" />
+                    <button 
+                      type="button" 
+                      onClick={() => handleRemoveImage(i)}
+                      className="absolute top-1 right-1 bg-black/60 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500/80"
+                    >
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                    {i === 0 && (
+                      <div className="absolute bottom-0 left-0 right-0 bg-emerald-500/80 text-white text-[10px] font-bold text-center py-0.5">
+                        PRIMARY
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Featured & Visibility */}
+          <div className="flex flex-col gap-3 sm:flex-row sm:gap-6">
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input type="checkbox" name="featured" checked={form.featured} onChange={handleChange} className="modern-toggle" />
+              <span className="text-sm text-elevated-muted">Featured product (homepage)</span>
+            </label>
+            <label className="flex items-center gap-3 cursor-pointer">
+              <input type="checkbox" name="isVisible" checked={form.isVisible} onChange={handleChange} className="modern-toggle" />
+              <span className="text-sm text-elevated-muted">Visible on storefront</span>
+            </label>
+          </div>
+
+          {/* Actions */}
+          <div className="flex gap-3 pt-4 border-t border-elevated-border">
+            <button type="submit" disabled={saving} className="btn-primary flex-1 disabled:opacity-50">
+              {saving ? 'Saving...' : isEdit ? 'Update Product' : 'Add Product'}
+            </button>
+            <button type="button" onClick={onCancel} className="btn-secondary">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #0a0a0a;
+    color: #ededed;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #111111;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #2a2a3e;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #3a3a4e;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-elevated-card/80 backdrop-blur-md border border-elevated-border rounded-2xl;
+  }
+
+  .glass-card-hover {
+    @apply glass-card transition-all duration-300 hover:border-elevated-emerald/40 hover:shadow-lg hover:shadow-elevated-emerald/10 hover:-translate-y-1;
+  }
+
+  .btn-primary {
+    @apply bg-elevated-emerald text-white font-semibold px-6 py-3 rounded-xl transition-all duration-300 hover:bg-elevated-emerald-dark hover:shadow-lg hover:shadow-elevated-emerald/25 active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply bg-transparent border border-elevated-emerald text-elevated-emerald font-semibold px-6 py-3 rounded-xl transition-all duration-300 hover:bg-elevated-emerald/10 active:scale-95;
+  }
+
+  .btn-gold {
+    @apply bg-elevated-gold text-elevated-black font-semibold px-6 py-3 rounded-xl transition-all duration-300 hover:bg-elevated-gold-light hover:shadow-lg hover:shadow-elevated-gold/25 active:scale-95;
+  }
+
+  .btn-danger {
+    @apply bg-red-600 text-white font-semibold px-4 py-2 rounded-xl transition-all duration-300 hover:bg-red-700 active:scale-95;
+  }
+
+  .input-field {
+    @apply w-full bg-elevated-dark border border-elevated-border rounded-xl px-4 py-3 text-white placeholder-elevated-muted focus:outline-none focus:border-elevated-emerald focus:ring-1 focus:ring-elevated-emerald transition-colors duration-200;
+  }
+
+  .select-field {
+    @apply w-full bg-elevated-dark border border-elevated-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-elevated-emerald focus:ring-1 focus:ring-elevated-emerald transition-colors duration-200 appearance-none cursor-pointer;
+  }
+
+  .modern-checkbox {
+    @apply appearance-none w-5 h-5 rounded border border-elevated-border bg-elevated-dark cursor-pointer transition-all duration-300 relative flex-shrink-0;
+  }
+  .modern-checkbox:hover {
+    @apply border-elevated-emerald/50;
+  }
+  .modern-checkbox:checked {
+    @apply bg-elevated-emerald border-elevated-emerald;
+  }
+  .modern-checkbox::after {
+    content: '';
+    @apply absolute border-r-2 border-b-2 border-white opacity-0 transition-all duration-300;
+    width: 6px;
+    height: 10px;
+    left: 6px;
+    top: 3px;
+    transform: rotate(45deg) scale(0.5);
+  }
+  .modern-checkbox:checked::after {
+    @apply opacity-100;
+    transform: rotate(45deg) scale(1);
+  }
+
+  .modern-toggle {
+    @apply appearance-none w-10 h-5 rounded-full bg-elevated-dark border border-elevated-border cursor-pointer transition-all duration-300 relative flex-shrink-0;
+  }
+  .modern-toggle:hover {
+    @apply border-elevated-emerald/50;
+  }
+  .modern-toggle:checked {
+    @apply bg-elevated-emerald border-elevated-emerald;
+  }
+  .modern-toggle::after {
+    content: '';
+    @apply absolute top-[1px] left-[1px] bg-elevated-muted rounded-full transition-all duration-300 shadow-sm;
+    height: 16px;
+    width: 16px;
+  }
+  .modern-toggle:checked::after {
+    @apply translate-x-[20px] bg-white;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold;
+  }
+
+  .badge-indica {
+    @apply badge bg-purple-500/20 text-purple-400 border border-purple-500/30;
+  }
+
+  .badge-sativa {
+    @apply badge bg-orange-500/20 text-orange-400 border border-orange-500/30;
+  }
+
+  .badge-hybrid {
+    @apply badge bg-blue-500/20 text-blue-400 border border-blue-500/30;
+  }
+
+  .badge-edible {
+    @apply badge bg-pink-500/20 text-pink-400 border border-pink-500/30;
+  }
+
+  .section-title {
+    @apply text-3xl md:text-4xl font-bold text-white mb-2;
+  }
+
+  .section-subtitle {
+    @apply text-elevated-muted text-lg;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-elevated-emerald to-elevated-gold;
+  }
+
+  .glow-emerald {
+    box-shadow: 0 0 30px rgba(16, 185, 129, 0.15);
+  }
+
+  .glow-gold {
+    box-shadow: 0 0 30px rgba(212, 168, 83, 0.15);
+  }
+}
