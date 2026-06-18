@@ -96,7 +96,10 @@ export default function BannersClient() {
           body: formData,
         });
         
-        if (!res.ok) throw new Error('Upload failed');
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.details || errData.error || `Upload failed with status ${res.status}`);
+        }
         const data = await res.json();
         setValue(data.url);
       } catch (err) {
