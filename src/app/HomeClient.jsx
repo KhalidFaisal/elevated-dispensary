@@ -34,9 +34,9 @@ function BannerCarousel({ banners }) {
           >
             <Link href={banner.link || '#'} className="block w-full h-full cursor-pointer">
               <picture>
-                <source media="(min-width: 768px)" srcSet={banner.desktopImage} />
+                <source media="(min-width: 768px)" srcSet={banner.desktopImage || banner.mobileImage} />
                 <img
-                  src={banner.mobileImage}
+                  src={banner.mobileImage || banner.desktopImage}
                   alt={banner.title}
                   className="w-full h-auto object-contain"
                 />
