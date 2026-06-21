@@ -23,20 +23,20 @@ export default function AdminDashboardLayout({ children }) {
 
   if (!authed) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-elevated-black">
-        <div className="animate-pulse text-elevated-muted">Loading...</div>
+      <div className="min-h-screen flex items-center justify-center bg-pc-black">
+        <div className="animate-pulse text-pc-muted">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col md:flex-row h-screen overflow-hidden bg-elevated-black">
+    <div className="flex flex-col md:flex-row h-screen overflow-hidden bg-pc-black">
       {/* Mobile Header */}
-      <div className="md:hidden flex items-center justify-between p-4 bg-elevated-dark border-b border-elevated-border shrink-0">
+      <div className="md:hidden flex items-center justify-between p-4 bg-pc-dark border-b border-pc-border shrink-0">
         <span className="text-lg font-black tracking-tight text-gradient">ELEVATED ADMIN</span>
         <button 
           onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="p-2 text-elevated-muted hover:text-white"
+          className="p-2 text-pc-muted hover:text-white"
         >
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
             {sidebarOpen ? (

@@ -56,7 +56,7 @@ export default function AdminDashboardPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="animate-pulse text-elevated-muted">Loading dashboard...</div>
+        <div className="animate-pulse text-pc-muted">Loading dashboard...</div>
       </div>
     );
   }
@@ -65,7 +65,7 @@ export default function AdminDashboardPage() {
     <div className="animate-fade-in">
       <div className="mb-8">
         <h1 className="text-3xl font-black text-white">Dashboard</h1>
-        <p className="text-elevated-muted">Welcome back to ELEVATED admin</p>
+        <p className="text-pc-muted">Welcome back to ELEVATED admin</p>
       </div>
 
       {/* Stats */}
@@ -81,20 +81,20 @@ export default function AdminDashboardPage() {
         <div className="glass-card p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-bold text-white">Recent Orders</h2>
-            <Link href="/admin/dashboard/orders" className="text-elevated-emerald text-sm hover:text-elevated-emerald-light transition-colors">
+            <Link href="/admin/dashboard/orders" className="text-pc-green text-sm hover:text-pc-green-light transition-colors">
               View All →
             </Link>
           </div>
 
           {recentOrders.length === 0 ? (
-            <p className="text-elevated-muted text-sm py-4">No orders yet</p>
+            <p className="text-pc-muted text-sm py-4">No orders yet</p>
           ) : (
             <div className="space-y-3">
               {recentOrders.map((order) => (
-                <div key={order.id} className="flex items-center justify-between p-3 rounded-xl bg-elevated-dark/50 hover:bg-elevated-dark transition-colors">
+                <div key={order.id} className="flex items-center justify-between p-3 rounded-xl bg-pc-dark/50 hover:bg-pc-dark transition-colors">
                   <div>
                     <p className="text-white font-semibold text-sm">{order.orderNumber}</p>
-                    <p className="text-elevated-muted text-xs">{order.customerName} • {order.items?.length || 0} items</p>
+                    <p className="text-pc-muted text-xs">{order.customerName} • {order.items?.length || 0} items</p>
                   </div>
                   <div className="text-right">
                     <OrderStatusBadge status={order.status} />
@@ -110,14 +110,14 @@ export default function AdminDashboardPage() {
         <div className="glass-card p-6">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-bold text-white">Low Stock Alerts</h2>
-            <Link href="/admin/dashboard/products" className="text-elevated-emerald text-sm hover:text-elevated-emerald-light transition-colors">
+            <Link href="/admin/dashboard/products" className="text-pc-green text-sm hover:text-pc-green-light transition-colors">
               Manage →
             </Link>
           </div>
 
           {lowStockProducts.length === 0 ? (
             <div className="text-center py-4">
-              <p className="flex items-center gap-2 text-elevated-emerald text-sm font-medium">
+              <p className="flex items-center gap-2 text-pc-green text-sm font-medium">
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
                 <span>All products well stocked</span>
               </p>
@@ -125,13 +125,13 @@ export default function AdminDashboardPage() {
           ) : (
             <div className="space-y-3">
               {lowStockProducts.map((product) => (
-                <div key={product.id} className="flex items-center justify-between p-3 rounded-xl bg-elevated-dark/50">
+                <div key={product.id} className="flex items-center justify-between p-3 rounded-xl bg-pc-dark/50">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg overflow-hidden bg-elevated-smoke flex-shrink-0">
+                    <div className="w-10 h-10 rounded-lg overflow-hidden bg-pc-smoke flex-shrink-0">
                       {product.image ? (
                         <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-elevated-border">
+                        <div className="w-full h-full flex items-center justify-center text-pc-border">
                           <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z" />
                           </svg>
@@ -140,7 +140,7 @@ export default function AdminDashboardPage() {
                     </div>
                     <div>
                       <p className="text-white font-medium text-sm">{product.name}</p>
-                      <p className="text-elevated-muted text-xs">{product.category}</p>
+                      <p className="text-pc-muted text-xs">{product.category}</p>
                     </div>
                   </div>
                   <span className={`font-bold text-sm ${product.stock === 0 ? 'text-red-400' : product.stock <= 5 ? 'text-yellow-400' : 'text-orange-400'}`}>

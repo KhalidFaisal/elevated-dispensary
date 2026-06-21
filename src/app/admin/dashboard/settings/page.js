@@ -188,38 +188,38 @@ export default function SettingsPage() {
       <div className="flex justify-between items-end">
         <div>
           <h1 className="text-3xl font-bold text-white mb-2">Settings</h1>
-          <p className="text-elevated-muted">Manage global site settings.</p>
+          <p className="text-pc-muted">Manage global site settings.</p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
-      <div className="bg-elevated-dark border border-elevated-border rounded-2xl p-6">
+      <div className="bg-pc-dark border border-pc-border rounded-2xl p-6">
         <h2 className="text-xl font-semibold text-white mb-4">Site Access Password</h2>
-        <p className="text-elevated-muted mb-6 text-sm">
-          Change the password required for users to enter the site. The current password is <span className="text-elevated-emerald font-bold font-mono px-1">{currentPassword}</span>.
+        <p className="text-pc-muted mb-6 text-sm">
+          Change the password required for users to enter the site. The current password is <span className="text-pc-green font-bold font-mono px-1">{currentPassword}</span>.
         </p>
 
         <form onSubmit={handleSiteSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-elevated-muted mb-1">New Password</label>
+            <label className="block text-sm font-medium text-pc-muted mb-1">New Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-elevated-black border border-elevated-border rounded-xl px-4 py-2 text-white focus:outline-none focus:border-elevated-emerald"
+              className="w-full bg-pc-black border border-pc-border rounded-xl px-4 py-2 text-white focus:outline-none focus:border-pc-green"
               required
               minLength={4}
             />
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-elevated-muted mb-1">Confirm Password</label>
+            <label className="block text-sm font-medium text-pc-muted mb-1">Confirm Password</label>
             <input
               type="password"
               value={confirm}
               onChange={(e) => setConfirm(e.target.value)}
-              className="w-full bg-elevated-black border border-elevated-border rounded-xl px-4 py-2 text-white focus:outline-none focus:border-elevated-emerald"
+              className="w-full bg-pc-black border border-pc-border rounded-xl px-4 py-2 text-white focus:outline-none focus:border-pc-green"
               required
               minLength={4}
             />
@@ -241,32 +241,32 @@ export default function SettingsPage() {
         </form>
       </div>
 
-      <div className="bg-elevated-dark border border-elevated-border rounded-2xl p-6">
+      <div className="bg-pc-dark border border-pc-border rounded-2xl p-6">
         <h2 className="text-xl font-semibold text-white mb-4">Admin Dashboard Password</h2>
-        <p className="text-elevated-muted mb-6 text-sm">
+        <p className="text-pc-muted mb-6 text-sm">
           Change the password you use to log into this admin dashboard.
         </p>
 
         <form onSubmit={handleAdminSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-elevated-muted mb-1">New Admin Password</label>
+            <label className="block text-sm font-medium text-pc-muted mb-1">New Admin Password</label>
             <input
               type="password"
               value={adminPassword}
               onChange={(e) => setAdminPassword(e.target.value)}
-              className="w-full bg-elevated-black border border-elevated-border rounded-xl px-4 py-2 text-white focus:outline-none focus:border-elevated-emerald"
+              className="w-full bg-pc-black border border-pc-border rounded-xl px-4 py-2 text-white focus:outline-none focus:border-pc-green"
               required
               minLength={4}
             />
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-elevated-muted mb-1">Confirm Admin Password</label>
+            <label className="block text-sm font-medium text-pc-muted mb-1">Confirm Admin Password</label>
             <input
               type="password"
               value={adminConfirm}
               onChange={(e) => setAdminConfirm(e.target.value)}
-              className="w-full bg-elevated-black border border-elevated-border rounded-xl px-4 py-2 text-white focus:outline-none focus:border-elevated-emerald"
+              className="w-full bg-pc-black border border-pc-border rounded-xl px-4 py-2 text-white focus:outline-none focus:border-pc-green"
               required
               minLength={4}
             />
@@ -289,21 +289,21 @@ export default function SettingsPage() {
       </div>
 
       {/* Timezone Section */}
-      <div className="bg-elevated-dark border border-elevated-border rounded-2xl p-6 lg:col-span-2">
+      <div className="bg-pc-dark border border-pc-border rounded-2xl p-6 lg:col-span-2">
         <h2 className="text-xl font-semibold text-white mb-4">Timezone</h2>
-        <p className="text-elevated-muted mb-6 text-sm">
+        <p className="text-pc-muted mb-6 text-sm">
           Set the global timezone for your store. This affects how dates and times are displayed.
-          The current timezone is <span className="text-elevated-emerald font-bold font-mono px-1">{currentTimezone}</span>.
+          The current timezone is <span className="text-pc-green font-bold font-mono px-1">{currentTimezone}</span>.
         </p>
 
         <form onSubmit={handleTimezoneSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-elevated-muted mb-1">Store Timezone (IANA Format)</label>
+            <label className="block text-sm font-medium text-pc-muted mb-1">Store Timezone (IANA Format)</label>
             <div className="flex gap-2">
               <select
                 value={timezone}
                 onChange={(e) => setTimezone(e.target.value)}
-                className="flex-1 bg-elevated-black border border-elevated-border rounded-xl px-4 py-2 text-white focus:outline-none focus:border-elevated-emerald appearance-none"
+                className="flex-1 bg-pc-black border border-pc-border rounded-xl px-4 py-2 text-white focus:outline-none focus:border-pc-green appearance-none"
                 required
               >
                 <option value="" disabled>Select a timezone...</option>
@@ -314,7 +314,7 @@ export default function SettingsPage() {
               <button
                 type="button"
                 onClick={handleAutoDetectTimezone}
-                className="px-4 py-2 bg-elevated-emerald/10 text-elevated-emerald hover:bg-elevated-emerald hover:text-elevated-black rounded-xl text-sm font-bold transition-all whitespace-nowrap"
+                className="px-4 py-2 bg-pc-green/10 text-pc-green hover:bg-pc-green hover:text-pc-black rounded-xl text-sm font-bold transition-all whitespace-nowrap"
               >
                 Auto-Detect
               </button>

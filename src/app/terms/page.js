@@ -12,16 +12,16 @@ export default function TermsPage() {
         <Navbar />
         <CartDrawer />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
-        <Link href="/" className="inline-flex items-center gap-2 text-elevated-emerald hover:text-elevated-emerald-light transition-colors mb-8 font-medium">
+        <Link href="/" className="inline-flex items-center gap-2 text-pc-green hover:text-pc-green-light transition-colors mb-8 font-medium">
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
           </svg>
           Back to Home
         </Link>
         <h1 className="text-4xl font-black text-white mb-4">Terms of Service & Disclaimer</h1>
-        <p className="text-xl text-elevated-muted mb-12">Keep scrolling to experience why we are New York's number one source.</p>
+        <p className="text-xl text-pc-muted mb-12">Keep scrolling to experience why we are New York's number one source.</p>
         
-        <div className="glass-card p-8 md:p-12 space-y-8 text-elevated-muted">
+        <div className="glass-card p-8 md:p-12 space-y-8 text-pc-muted">
           <section>
             <h2 className="text-xl font-bold text-white mb-3">1. Store Policies & Delivery</h2>
             <ul className="list-disc pl-5 space-y-2 leading-relaxed">

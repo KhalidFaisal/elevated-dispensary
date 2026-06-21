@@ -111,10 +111,10 @@ export default function BannersClient() {
 
     return (
       <div className="space-y-2">
-        <label className="block text-sm font-medium text-elevated-muted">{label}</label>
+        <label className="block text-sm font-medium text-pc-muted">{label}</label>
         <div className="flex items-center gap-4">
           {value && (
-            <img src={value} alt="Preview" className="h-16 w-32 object-cover rounded border border-elevated-border" />
+            <img src={value} alt="Preview" className="h-16 w-32 object-cover rounded border border-pc-border" />
           )}
           <input type="hidden" name={name} value={value} />
           <label className={`btn-secondary text-sm cursor-pointer ${uploading ? 'opacity-50 pointer-events-none' : ''}`}>
@@ -126,7 +126,7 @@ export default function BannersClient() {
     );
   };
 
-  if (loading) return <div className="text-elevated-muted animate-pulse">Loading banners...</div>;
+  if (loading) return <div className="text-pc-muted animate-pulse">Loading banners...</div>;
   if (error) return <div className="text-red-500 bg-red-500/10 p-4 rounded-xl">{error}</div>;
 
   return (
@@ -142,14 +142,14 @@ export default function BannersClient() {
 
       {isFormOpen && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-elevated-dark border border-elevated-border rounded-2xl w-full max-w-2xl p-6 overflow-y-auto max-h-[90vh]">
+          <div className="bg-pc-dark border border-pc-border rounded-2xl w-full max-w-2xl p-6 overflow-y-auto max-h-[90vh]">
             <h2 className="text-xl font-bold text-white mb-6">
               {editingBanner ? 'Edit Banner' : 'Create Banner'}
             </h2>
             
             <form onSubmit={handleSave} className="space-y-6">
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-elevated-muted">Internal Title</label>
+                <label className="block text-sm font-medium text-pc-muted">Internal Title</label>
                 <input 
                   type="text" 
                   name="title" 
@@ -173,7 +173,7 @@ export default function BannersClient() {
               />
 
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-elevated-muted">Link URL (Optional)</label>
+                <label className="block text-sm font-medium text-pc-muted">Link URL (Optional)</label>
                 <input 
                   type="text" 
                   name="link" 
@@ -185,7 +185,7 @@ export default function BannersClient() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-elevated-muted">Order (Priority)</label>
+                  <label className="block text-sm font-medium text-pc-muted">Order (Priority)</label>
                   <input 
                     type="number" 
                     name="order" 
@@ -205,7 +205,7 @@ export default function BannersClient() {
                 </div>
               </div>
 
-              <div className="flex gap-4 pt-4 border-t border-elevated-border">
+              <div className="flex gap-4 pt-4 border-t border-pc-border">
                 <button type="submit" className="btn-primary flex-1">Save Banner</button>
                 <button type="button" onClick={() => setIsFormOpen(false)} className="btn-secondary flex-1">Cancel</button>
               </div>
@@ -218,11 +218,11 @@ export default function BannersClient() {
       <div className="grid grid-cols-1 gap-4">
         {banners.map((banner) => (
           <div key={banner.id} className="glass-card p-4 flex flex-col md:flex-row items-center gap-6">
-            <div className="w-full md:w-48 h-24 bg-elevated-smoke rounded-xl overflow-hidden relative shrink-0">
+            <div className="w-full md:w-48 h-24 bg-pc-smoke rounded-xl overflow-hidden relative shrink-0">
               <img src={banner.desktopImage} alt={banner.title} className="w-full h-full object-cover" />
               <div className="absolute top-2 left-2 px-2 py-1 bg-black/70 text-xs rounded text-white font-medium">Desktop</div>
             </div>
-            <div className="w-full md:w-24 h-24 bg-elevated-smoke rounded-xl overflow-hidden relative shrink-0">
+            <div className="w-full md:w-24 h-24 bg-pc-smoke rounded-xl overflow-hidden relative shrink-0">
               <img src={banner.mobileImage} alt={banner.title} className="w-full h-full object-cover" />
               <div className="absolute top-2 left-2 px-2 py-1 bg-black/70 text-xs rounded text-white font-medium">Mobile</div>
             </div>
@@ -234,8 +234,8 @@ export default function BannersClient() {
                   <span className="px-2 py-0.5 rounded text-xs font-medium bg-red-500/20 text-red-500">Inactive</span>
                 )}
               </div>
-              <p className="text-sm text-elevated-muted">Order: {banner.order}</p>
-              {banner.link && <p className="text-sm text-elevated-emerald mt-1">Link: {banner.link}</p>}
+              <p className="text-sm text-pc-muted">Order: {banner.order}</p>
+              {banner.link && <p className="text-sm text-pc-green mt-1">Link: {banner.link}</p>}
             </div>
 
             <div className="flex gap-2 w-full md:w-auto">
@@ -245,7 +245,7 @@ export default function BannersClient() {
           </div>
         ))}
         {banners.length === 0 && (
-          <div className="text-center p-12 glass-card text-elevated-muted">
+          <div className="text-center p-12 glass-card text-pc-muted">
             No banners found. Create your first banner to display on the storefront!
           </div>
         )}

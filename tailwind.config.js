@@ -8,16 +8,16 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        elevated: {
+        pc: {
           black: '#0a0a0a',
           dark: '#111111',
           smoke: '#1a1a2e',
           card: '#161625',
-          emerald: '#10b981',
-          'emerald-dark': '#059669',
-          'emerald-light': '#34d399',
-          gold: '#d4a853',
-          'gold-light': '#e8c97a',
+          green: '#98e32c',
+          'green-dark': '#6da818',
+          'green-light': '#bbf067',
+          purple: '#9b3dd8',
+          'purple-light': '#b966f0',
           muted: '#6b7280',
           border: '#2a2a3e',
           'border-light': '#3a3a4e',

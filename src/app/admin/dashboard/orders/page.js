@@ -95,14 +95,14 @@ export default function AdminOrdersPage() {
   };
 
   if (loading) {
-    return <div className="flex items-center justify-center py-20"><div className="animate-pulse text-elevated-muted">Loading orders...</div></div>;
+    return <div className="flex items-center justify-center py-20"><div className="animate-pulse text-pc-muted">Loading orders...</div></div>;
   }
 
   return (
     <div className="animate-fade-in">
       <div className="mb-8">
         <h1 className="text-3xl font-black text-white">Orders</h1>
-        <p className="text-elevated-muted">{orders.length} total orders</p>
+        <p className="text-pc-muted">{orders.length} total orders</p>
       </div>
 
       {/* Status tabs */}
@@ -115,8 +115,8 @@ export default function AdminOrdersPage() {
               onClick={() => setStatusFilter(status)}
               className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
                 statusFilter === status
-                  ? 'bg-elevated-emerald text-white'
-                  : 'text-elevated-muted hover:text-white hover:bg-elevated-card border border-elevated-border'
+                  ? 'bg-pc-green text-white'
+                  : 'text-pc-muted hover:text-white hover:bg-pc-card border border-pc-border'
               }`}
             >
               {status === 'ALL' ? 'All' : status.charAt(0) + status.slice(1).toLowerCase()} ({count})
@@ -128,7 +128,7 @@ export default function AdminOrdersPage() {
       {/* Orders list */}
       {filtered.length === 0 ? (
         <div className="glass-card p-12 text-center">
-          <p className="text-elevated-muted">No orders found</p>
+          <p className="text-pc-muted">No orders found</p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -137,7 +137,7 @@ export default function AdminOrdersPage() {
               {/* Order Header */}
               <button
                 onClick={() => setExpandedOrder(expandedOrder === order.id ? null : order.id)}
-                className="w-full p-4 md:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-elevated-card/30 transition-colors text-left"
+                className="w-full p-4 md:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-pc-card/30 transition-colors text-left"
               >
                 <div className="flex items-center gap-4">
                   <div>
@@ -145,20 +145,20 @@ export default function AdminOrdersPage() {
                       <p className="text-white font-bold">{order.orderNumber}</p>
                       <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${
                         order.deliveryMethod === 'DELIVERY' 
-                          ? 'bg-elevated-gold/20 text-elevated-gold border border-elevated-gold/30'
-                          : 'bg-elevated-emerald/20 text-elevated-emerald border border-elevated-emerald/30'
+                          ? 'bg-pc-purple/20 text-pc-purple border border-pc-purple/30'
+                          : 'bg-pc-green/20 text-pc-green border border-pc-green/30'
                       }`}>
                         {order.deliveryMethod === 'DELIVERY' ? 'Delivery' : 'Pickup'}
                       </span>
                     </div>
-                    <p className="text-elevated-muted text-sm mt-1">{order.customerName} • {formatDate(order.createdAt)}</p>
+                    <p className="text-pc-muted text-sm mt-1">{order.customerName} • {formatDate(order.createdAt)}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
                   <OrderStatusBadge status={order.status} />
                   <span className="text-white font-bold text-lg">${order.total.toFixed(2)}</span>
                   <svg
-                    className={`w-5 h-5 text-elevated-muted transition-transform ${expandedOrder === order.id ? 'rotate-180' : ''}`}
+                    className={`w-5 h-5 text-pc-muted transition-transform ${expandedOrder === order.id ? 'rotate-180' : ''}`}
                     fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
@@ -168,22 +168,22 @@ export default function AdminOrdersPage() {
 
               {/* Expanded details */}
               {expandedOrder === order.id && (
-                <div className="border-t border-elevated-border p-4 md:p-6 animate-fade-in">
+                <div className="border-t border-pc-border p-4 md:p-6 animate-fade-in">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Customer info */}
                     <div>
-                      <h4 className="text-sm font-semibold text-elevated-muted uppercase tracking-wider mb-3">Customer Info</h4>
+                      <h4 className="text-sm font-semibold text-pc-muted uppercase tracking-wider mb-3">Customer Info</h4>
                       <div className="space-y-2 text-sm">
-                        <p><span className="text-elevated-muted">Name:</span> <span className="text-white">{order.customerName}</span></p>
-                        <p><span className="text-elevated-muted">Phone:</span> <span className="text-white">{order.customerPhone}</span></p>
-                        <p><span className="text-elevated-muted">Method:</span> <span className="text-white">{order.deliveryMethod === 'DELIVERY' ? 'Delivery' : 'Pickup'}</span></p>
+                        <p><span className="text-pc-muted">Name:</span> <span className="text-white">{order.customerName}</span></p>
+                        <p><span className="text-pc-muted">Phone:</span> <span className="text-white">{order.customerPhone}</span></p>
+                        <p><span className="text-pc-muted">Method:</span> <span className="text-white">{order.deliveryMethod === 'DELIVERY' ? 'Delivery' : 'Pickup'}</span></p>
                         {order.deliveryMethod === 'DELIVERY' && order.deliveryAddress && (
-                          <p><span className="text-elevated-muted">Address:</span> <span className="text-white">{order.deliveryAddress}</span></p>
+                          <p><span className="text-pc-muted">Address:</span> <span className="text-white">{order.deliveryAddress}</span></p>
                         )}
-                        {order.notes && <p><span className="text-elevated-muted">Notes:</span> <span className="text-white">{order.notes}</span></p>}
+                        {order.notes && <p><span className="text-pc-muted">Notes:</span> <span className="text-white">{order.notes}</span></p>}
                         {order.discountAmount > 0 && (
-                          <div className="mt-2 pt-2 border-t border-elevated-border/50">
-                            <p className="text-elevated-emerald font-semibold">
+                          <div className="mt-2 pt-2 border-t border-pc-border/50">
+                            <p className="text-pc-green font-semibold">
                               Discount Applied: <span className="text-white">"{order.discountName}" (-${order.discountAmount.toFixed(2)})</span>
                             </p>
                           </div>
@@ -193,7 +193,7 @@ export default function AdminOrdersPage() {
 
                     {/* Status update */}
                     <div>
-                      <h4 className="text-sm font-semibold text-elevated-muted uppercase tracking-wider mb-3">Update Status</h4>
+                      <h4 className="text-sm font-semibold text-pc-muted uppercase tracking-wider mb-3">Update Status</h4>
                       <div className="flex flex-wrap gap-2">
                         {['PENDING', 'PROCESSING', 'READY', 'COMPLETED', 'CANCELLED'].map((s) => (
                           <button
@@ -202,8 +202,8 @@ export default function AdminOrdersPage() {
                             disabled={order.status === s}
                             className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                               order.status === s
-                                ? 'bg-elevated-emerald/20 text-elevated-emerald border border-elevated-emerald/30'
-                                : 'text-elevated-muted hover:text-white border border-elevated-border hover:border-elevated-border-light'
+                                ? 'bg-pc-green/20 text-pc-green border border-pc-green/30'
+                                : 'text-pc-muted hover:text-white border border-pc-border hover:border-pc-border-light'
                             }`}
                           >
                             {s.charAt(0) + s.slice(1).toLowerCase()}
@@ -215,27 +215,27 @@ export default function AdminOrdersPage() {
 
                   {/* Order items */}
                   <div className="mt-6">
-                    <h4 className="text-sm font-semibold text-elevated-muted uppercase tracking-wider mb-3">Items</h4>
+                    <h4 className="text-sm font-semibold text-pc-muted uppercase tracking-wider mb-3">Items</h4>
                     <div className="space-y-2">
                       {order.items?.map((item) => (
-                        <div key={item.id} className="flex justify-between items-center p-3 rounded-xl bg-elevated-dark/50 text-sm">
+                        <div key={item.id} className="flex justify-between items-center p-3 rounded-xl bg-pc-dark/50 text-sm">
                           <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-lg overflow-hidden bg-elevated-smoke flex-shrink-0">
+                            <div className="w-8 h-8 rounded-lg overflow-hidden bg-pc-smoke flex-shrink-0">
                               {item.product?.image ? (
                                 <img src={item.product.image} alt={item.product.name} className="w-full h-full object-cover" />
                               ) : (
-                                <div className="w-8 h-8 rounded-lg bg-elevated-dark border border-elevated-border flex items-center justify-center shrink-0">
+                                <div className="w-8 h-8 rounded-lg bg-pc-dark border border-pc-border flex items-center justify-center shrink-0">
                                   {item.product.category === 'FLOWER' ? (
-                                    <CannabisIcon className="w-4 h-4 text-elevated-emerald" />
+                                    <CannabisIcon className="w-4 h-4 text-pc-green" />
                                   ) : (
-                                    <svg className="w-4 h-4 text-elevated-border" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                    <svg className="w-4 h-4 text-pc-border" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                                   )}
                                 </div>
                               )}
                             </div>
                             <div>
                               <p className="text-white font-medium">{item.product?.name || 'Unknown'}</p>
-                              <p className="text-elevated-muted text-xs">× {item.quantity}</p>
+                              <p className="text-pc-muted text-xs">× {item.quantity}</p>
                             </div>
                           </div>
                           <p className="text-white font-semibold">${(item.price * item.quantity).toFixed(2)}</p>

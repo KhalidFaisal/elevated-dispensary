@@ -68,7 +68,7 @@ export default function MenuClient({ products, initialCategory, initialSearch })
               {/* Search */}
               <div className="flex-1 relative">
                 <svg
-                  className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-elevated-muted"
+                  className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-pc-muted"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -87,7 +87,7 @@ export default function MenuClient({ products, initialCategory, initialSearch })
               </div>
 
               {/* Category tabs */}
-              <div className="flex rounded-xl overflow-hidden border border-elevated-border">
+              <div className="flex rounded-xl overflow-hidden border border-pc-border">
                 {[
                   { value: 'ALL', label: 'All' },
                   { value: 'FLOWER', label: 'Flowers' },
@@ -100,8 +100,8 @@ export default function MenuClient({ products, initialCategory, initialSearch })
                     }}
                     className={`px-4 py-2.5 text-sm font-medium transition-all ${
                       category === tab.value
-                        ? 'bg-elevated-emerald text-white'
-                        : 'text-elevated-muted hover:text-white hover:bg-elevated-card'
+                        ? 'bg-pc-green text-white'
+                        : 'text-pc-muted hover:text-white hover:bg-pc-card'
                     }`}
                     id={`category-${tab.value.toLowerCase()}`}
                   >
@@ -127,7 +127,7 @@ export default function MenuClient({ products, initialCategory, initialSearch })
           </div>
 
           {/* Results count */}
-          <p className="text-elevated-muted text-sm mb-6">
+          <p className="text-pc-muted text-sm mb-6">
             Showing {filtered.length} product{filtered.length !== 1 ? 's' : ''}
           </p>
 
@@ -140,20 +140,20 @@ export default function MenuClient({ products, initialCategory, initialSearch })
             </div>
           ) : (
             <div className="text-center py-20">
-              <svg className="w-16 h-16 mx-auto text-elevated-border mb-4" viewBox="0 0 24 24" fill="currentColor">
+              <svg className="w-16 h-16 mx-auto text-pc-border mb-4" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z" />
               </svg>
               <h3 className="text-xl font-bold text-white mb-2">No products found</h3>
-              <p className="text-elevated-muted">Try adjusting your filters or search term</p>
+              <p className="text-pc-muted">Try adjusting your filters or search term</p>
             </div>
           )}
         </div>
       </main>
 
       {/* Simple Footer */}
-      <footer className="border-t border-elevated-border py-8 text-center text-elevated-muted/60 text-xs">
+      <footer className="border-t border-pc-border py-8 text-center text-pc-muted/60 text-xs">
         <div className="max-w-4xl mx-auto px-4">
-          <p className="mb-2 uppercase tracking-widest font-semibold text-elevated-muted">Disclaimer:</p>
+          <p className="mb-2 uppercase tracking-widest font-semibold text-pc-muted">Disclaimer:</p>
           <p className="mb-4">
             Our products are not FDA approved to diagnose, treat, cure, or prevent any disease. All items comply with the U.S. Farm Bill and contain less than 0.3% THC. Intended for adult use only. THCa and other hemp-derived THC products are not shipped to states where restricted by law. Full disclaimer in <Link href="/terms" className="underline hover:text-white transition-colors">Terms of Service</Link>.
           </p>

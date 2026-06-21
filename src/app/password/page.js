@@ -36,7 +36,7 @@ export default function PasswordPage() {
         {/* Leaf icon */}
         <div className="mb-6">
           <svg
-            className="w-20 h-20 mx-auto text-elevated-emerald animate-float"
+            className="w-20 h-20 mx-auto text-pc-green animate-float"
             viewBox="0 0 24 24"
             fill="currentColor"
           >
@@ -48,7 +48,7 @@ export default function PasswordPage() {
         <h1 className="text-5xl font-black text-gradient mb-2 tracking-tight">
           ELEVATED
         </h1>
-        <p className="text-elevated-muted text-sm mb-8 tracking-widest uppercase">
+        <p className="text-pc-muted text-sm mb-8 tracking-widest uppercase">
           Rise Above
         </p>
 
@@ -57,7 +57,7 @@ export default function PasswordPage() {
           <h2 className="text-2xl font-bold text-white mb-2">
             Enter Password
           </h2>
-          <p className="text-elevated-muted text-sm mb-6">
+          <p className="text-pc-muted text-sm mb-6">
             This site is protected. Please enter the password to continue.
           </p>
 
@@ -67,7 +67,7 @@ export default function PasswordPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter password..."
-              className="bg-elevated-dark border border-elevated-border text-white px-4 py-3 rounded-xl focus:outline-none focus:ring-1 focus:ring-elevated-emerald transition-all w-full text-center"
+              className="bg-pc-dark border border-pc-border text-white px-4 py-3 rounded-xl focus:outline-none focus:ring-1 focus:ring-pc-green transition-all w-full text-center"
               required
             />
             {error && <p className="text-red-400 text-sm">{error}</p>}
@@ -81,7 +81,7 @@ export default function PasswordPage() {
           </form>
         </div>
 
-        <p className="text-elevated-muted/50 text-xs">
+        <p className="text-pc-muted/50 text-xs">
           By entering this site, you confirm that you are of legal age in your jurisdiction.
         </p>
       </div>

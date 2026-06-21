@@ -124,13 +124,13 @@ export default function ProductForm({ product, token, onSave, onCancel }) {
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Name */}
           <div>
-            <label className="block text-sm font-medium text-elevated-muted mb-1">Product Name *</label>
+            <label className="block text-sm font-medium text-pc-muted mb-1">Product Name *</label>
             <input name="name" value={form.name} onChange={handleChange} required className="input-field" placeholder="e.g. OG Kush" />
           </div>
 
           {/* Category */}
           <div>
-            <label className="block text-sm font-medium text-elevated-muted mb-1">Category *</label>
+            <label className="block text-sm font-medium text-pc-muted mb-1">Category *</label>
             <select name="category" value={form.category} onChange={handleChange} className="select-field">
               <option value="FLOWER">Flower</option>
               <option value="EDIBLE">Edible</option>
@@ -140,28 +140,28 @@ export default function ProductForm({ product, token, onSave, onCancel }) {
           {/* Price / Weight / Stock */}
           <div className="grid grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-elevated-muted mb-1">Price ($) *</label>
+              <label className="block text-sm font-medium text-pc-muted mb-1">Price ($) *</label>
               <input name="price" type="number" step="0.01" value={form.price} onChange={handleChange} required className="input-field" placeholder="35.00" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-elevated-muted mb-1">Weight/Size (Optional)</label>
+              <label className="block text-sm font-medium text-pc-muted mb-1">Weight/Size (Optional)</label>
               <input name="weight" value={form.weight} onChange={handleChange} className="input-field" placeholder="3.5g, 1pc" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-elevated-muted mb-1">Stock *</label>
+              <label className="block text-sm font-medium text-pc-muted mb-1">Stock *</label>
               <input name="stock" type="number" value={form.stock} onChange={handleChange} required className="input-field" placeholder="100" />
             </div>
           </div>
 
           {/* Description */}
           <div>
-            <label className="block text-sm font-medium text-elevated-muted mb-1">Description</label>
+            <label className="block text-sm font-medium text-pc-muted mb-1">Description</label>
             <textarea name="description" value={form.description} onChange={handleChange} rows={3} className="input-field resize-none" placeholder="Describe this product..." />
           </div>
 
           {/* Image Gallery */}
           <div>
-            <label className="block text-sm font-medium text-elevated-muted mb-2">Product Images (First image is primary)</label>
+            <label className="block text-sm font-medium text-pc-muted mb-2">Product Images (First image is primary)</label>
             
             <div className="flex gap-2 mb-4">
               <input 
@@ -174,9 +174,9 @@ export default function ProductForm({ product, token, onSave, onCancel }) {
               <button type="button" onClick={handleAddUrl} className="btn-secondary whitespace-nowrap">Add URL</button>
             </div>
 
-            <label className={`block border-2 border-dashed border-elevated-border rounded-xl p-4 text-center cursor-pointer hover:border-elevated-emerald/50 transition-colors mb-4 ${uploading ? 'opacity-50 pointer-events-none' : ''}`}>
+            <label className={`block border-2 border-dashed border-pc-border rounded-xl p-4 text-center cursor-pointer hover:border-pc-green/50 transition-colors mb-4 ${uploading ? 'opacity-50 pointer-events-none' : ''}`}>
               <input type="file" accept="image/*" multiple onChange={handleImageUpload} className="hidden" />
-              <p className="text-elevated-muted text-sm">
+              <p className="text-pc-muted text-sm">
                 {uploading ? 'Uploading...' : 'Or click to upload files (can select multiple)'}
               </p>
             </label>
@@ -184,7 +184,7 @@ export default function ProductForm({ product, token, onSave, onCancel }) {
             {images.length > 0 && (
               <div className="grid grid-cols-4 gap-3">
                 {images.map((img, i) => (
-                  <div key={i} className="relative aspect-square rounded-xl overflow-hidden bg-elevated-smoke group">
+                  <div key={i} className="relative aspect-square rounded-xl overflow-hidden bg-pc-smoke group">
                     <img src={img} alt={`Gallery ${i+1}`} className="w-full h-full object-cover" />
                     <button 
                       type="button" 
@@ -208,16 +208,16 @@ export default function ProductForm({ product, token, onSave, onCancel }) {
           <div className="flex flex-col gap-3 sm:flex-row sm:gap-6">
             <label className="flex items-center gap-3 cursor-pointer">
               <input type="checkbox" name="featured" checked={form.featured} onChange={handleChange} className="modern-toggle" />
-              <span className="text-sm text-elevated-muted">Featured product (homepage)</span>
+              <span className="text-sm text-pc-muted">Featured product (homepage)</span>
             </label>
             <label className="flex items-center gap-3 cursor-pointer">
               <input type="checkbox" name="isVisible" checked={form.isVisible} onChange={handleChange} className="modern-toggle" />
-              <span className="text-sm text-elevated-muted">Visible on storefront</span>
+              <span className="text-sm text-pc-muted">Visible on storefront</span>
             </label>
           </div>
 
           {/* Actions */}
-          <div className="flex gap-3 pt-4 border-t border-elevated-border">
+          <div className="flex gap-3 pt-4 border-t border-pc-border">
             <button type="submit" disabled={saving} className="btn-primary flex-1 disabled:opacity-50">
               {saving ? 'Saving...' : isEdit ? 'Update Product' : 'Add Product'}
             </button>

@@ -8,15 +8,18 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: 'ELEVATED | Premium Cannabis Dispensary',
-  description: 'Rise Above — Premium flower and edibles from ELEVATED dispensary. Browse our curated selection and order for pickup.',
-  keywords: 'cannabis, dispensary, flower, edibles, THC, CBD, premium, ELEVATED',
+  title: 'Perspective Collective | Premium Cannabis Dispensary',
+  description: 'SEE IT. FEEL IT. LIVE IT. — Premium flower and edibles from Perspective Collective. Browse our curated selection and order for pickup.',
+  keywords: 'cannabis, dispensary, flower, edibles, THC, CBD, premium, Perspective Collective',
+  icons: {
+    icon: '/icon.png',
+  },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} antialiased`}>
-      <body className="min-h-screen bg-elevated-black text-white font-sans">
+      <body className="min-h-screen bg-pc-black text-white font-sans">
         {children}
       </body>
     </html>

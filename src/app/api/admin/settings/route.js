@@ -3,7 +3,7 @@ import prisma from '@/lib/prisma';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'elevated-super-secret-key-change-in-production';
+const JWT_SECRET = process.env.JWT_SECRET || 'pc-super-secret-key-change-in-production';
 
 export async function GET(request) {
   try {

@@ -151,7 +151,7 @@ export default function DiscountsPage() {
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-black text-white mb-2">Automatic Discounts</h1>
-        <p className="text-elevated-muted">Manage automatic checkout rules</p>
+        <p className="text-pc-muted">Manage automatic checkout rules</p>
       </div>
 
       {error && (
@@ -169,12 +169,12 @@ export default function DiscountsPage() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-elevated-muted mb-1">Discount Name</label>
+              <label className="block text-sm font-medium text-pc-muted mb-1">Discount Name</label>
               <input name="name" value={form.name} onChange={handleChange} required className="input-field" placeholder="e.g. 10% Off Edibles" />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-elevated-muted mb-1">Status</label>
+              <label className="block text-sm font-medium text-pc-muted mb-1">Status</label>
               <label className="flex items-center gap-3 mt-3 cursor-pointer">
                 <input type="checkbox" name="isActive" checked={form.isActive} onChange={handleChange} className="modern-toggle" />
                 <span className="text-white font-medium">Active</span>
@@ -182,7 +182,7 @@ export default function DiscountsPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-elevated-muted mb-1">Discount Type</label>
+              <label className="block text-sm font-medium text-pc-muted mb-1">Discount Type</label>
               <select name="type" value={form.type} onChange={handleChange} className="input-field">
                 <option value="PERCENTAGE">Percentage (%)</option>
                 <option value="FIXED">Fixed Amount ($)</option>
@@ -190,12 +190,12 @@ export default function DiscountsPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-elevated-muted mb-1">Discount Value</label>
+              <label className="block text-sm font-medium text-pc-muted mb-1">Discount Value</label>
               <input type="number" step="0.01" name="value" value={form.value} onChange={handleChange} required className="input-field" placeholder={form.type === 'PERCENTAGE' ? '10' : '5.00'} />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-elevated-muted mb-1">Applies To</label>
+              <label className="block text-sm font-medium text-pc-muted mb-1">Applies To</label>
               <select name="targetType" value={form.targetType} onChange={handleChange} className="input-field">
                 <option value="ENTIRE_ORDER">Entire Order</option>
                 <option value="CATEGORY">Specific Category</option>
@@ -204,15 +204,15 @@ export default function DiscountsPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-elevated-muted mb-1">Minimum Qualifying Subtotal ($)</label>
+              <label className="block text-sm font-medium text-pc-muted mb-1">Minimum Qualifying Subtotal ($)</label>
               <input type="number" step="0.01" name="minOrderValue" value={form.minOrderValue} onChange={handleChange} required className="input-field" />
-              <p className="text-xs text-elevated-muted mt-1">Set to 0 for no minimum.</p>
+              <p className="text-xs text-pc-muted mt-1">Set to 0 for no minimum.</p>
             </div>
           </div>
 
           {form.targetType === 'CATEGORY' && (
-            <div className="border-t border-elevated-border pt-6 mt-6">
-              <label className="block text-sm font-medium text-elevated-muted mb-1">Select Category</label>
+            <div className="border-t border-pc-border pt-6 mt-6">
+              <label className="block text-sm font-medium text-pc-muted mb-1">Select Category</label>
               <select name="targetCategory" value={form.targetCategory} onChange={handleChange} required className="input-field max-w-md">
                 <option value="">-- Choose Category --</option>
                 <option value="FLOWER">Flower</option>
@@ -222,8 +222,8 @@ export default function DiscountsPage() {
           )}
 
           {form.targetType === 'SPECIFIC_PRODUCTS' && (
-            <div className="border-t border-elevated-border pt-6 mt-6">
-              <label className="block text-sm font-medium text-elevated-muted mb-3">Select Products</label>
+            <div className="border-t border-pc-border pt-6 mt-6">
+              <label className="block text-sm font-medium text-pc-muted mb-3">Select Products</label>
               
               {/* Search Box */}
               <div className="mb-4">
@@ -236,7 +236,7 @@ export default function DiscountsPage() {
                 />
               </div>
 
-              <div className="max-h-60 overflow-y-auto bg-elevated-dark border border-elevated-border rounded-xl p-4 grid grid-cols-1 sm:grid-cols-2 gap-3 custom-scrollbar">
+              <div className="max-h-60 overflow-y-auto bg-pc-dark border border-pc-border rounded-xl p-4 grid grid-cols-1 sm:grid-cols-2 gap-3 custom-scrollbar">
                 {products
                   .filter(product => product.name.toLowerCase().includes(productSearch.toLowerCase()))
                   .map(product => (
@@ -248,7 +248,7 @@ export default function DiscountsPage() {
                       className="modern-checkbox" 
                     />
                     <span className="text-white text-sm">{product.name}</span>
-                    <span className="text-elevated-muted text-xs ml-auto">${product.price.toFixed(2)}</span>
+                    <span className="text-pc-muted text-xs ml-auto">${product.price.toFixed(2)}</span>
                   </label>
                 ))}
               </div>
@@ -260,7 +260,7 @@ export default function DiscountsPage() {
               {saving ? 'Saving...' : editingId ? 'Update Discount' : 'Create Discount'}
             </button>
             {editingId && (
-              <button type="button" onClick={handleCancel} className="px-6 py-3 rounded-xl font-bold text-white bg-elevated-dark border border-elevated-border hover:bg-white/5 transition-all">
+              <button type="button" onClick={handleCancel} className="px-6 py-3 rounded-xl font-bold text-white bg-pc-dark border border-pc-border hover:bg-white/5 transition-all">
                 Cancel
               </button>
             )}
@@ -271,8 +271,8 @@ export default function DiscountsPage() {
       {/* List */}
       <div className="glass-card overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm text-elevated-muted">
-            <thead className="text-xs uppercase bg-elevated-dark/50 text-white border-b border-elevated-border">
+          <table className="w-full text-left text-sm text-pc-muted">
+            <thead className="text-xs uppercase bg-pc-dark/50 text-white border-b border-pc-border">
               <tr>
                 <th className="px-6 py-4 font-bold">Name</th>
                 <th className="px-6 py-4 font-bold">Discount</th>
@@ -282,10 +282,10 @@ export default function DiscountsPage() {
                 <th className="px-6 py-4 font-bold text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-elevated-border">
+            <tbody className="divide-y divide-pc-border">
               {discounts.length === 0 ? (
                 <tr>
-                  <td colSpan="6" className="px-6 py-8 text-center text-elevated-muted">
+                  <td colSpan="6" className="px-6 py-8 text-center text-pc-muted">
                     No discounts found. Create one above.
                   </td>
                 </tr>
@@ -295,7 +295,7 @@ export default function DiscountsPage() {
                     <td className="px-6 py-4 font-bold text-white">
                       {discount.name}
                     </td>
-                    <td className="px-6 py-4 text-elevated-emerald font-semibold">
+                    <td className="px-6 py-4 text-pc-green font-semibold">
                       {discount.type === 'PERCENTAGE' ? `${discount.value}%` : `$${discount.value.toFixed(2)}`}
                     </td>
                     <td className="px-6 py-4">
@@ -309,7 +309,7 @@ export default function DiscountsPage() {
                     <td className="px-6 py-4">
                       <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
                         discount.isActive 
-                          ? 'bg-elevated-emerald/20 text-elevated-emerald' 
+                          ? 'bg-pc-green/20 text-pc-green' 
                           : 'bg-red-500/20 text-red-400'
                       }`}>
                         {discount.isActive ? 'Active' : 'Inactive'}
@@ -317,7 +317,7 @@ export default function DiscountsPage() {
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-3">
-                        <button onClick={() => handleEdit(discount)} className="text-elevated-muted hover:text-white transition-colors">
+                        <button onClick={() => handleEdit(discount)} className="text-pc-muted hover:text-white transition-colors">
                           Edit
                         </button>
                         <button onClick={() => handleDelete(discount.id)} className="text-red-400 hover:text-red-300 transition-colors">

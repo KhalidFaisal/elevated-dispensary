@@ -287,11 +287,11 @@ export default function AdminProductsPage() {
     if (stock === 0) return 'text-red-400 bg-red-500/10';
     if (stock <= 5) return 'text-yellow-400 bg-yellow-500/10';
     if (stock <= 10) return 'text-orange-400 bg-orange-500/10';
-    return 'text-elevated-emerald bg-elevated-emerald/10';
+    return 'text-pc-green bg-pc-green/10';
   };
 
   if (loading) {
-    return <div className="flex items-center justify-center py-20"><div className="animate-pulse text-elevated-muted">Loading products...</div></div>;
+    return <div className="flex items-center justify-center py-20"><div className="animate-pulse text-pc-muted">Loading products...</div></div>;
   }
 
   return (
@@ -299,7 +299,7 @@ export default function AdminProductsPage() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-black text-white">Products</h1>
-          <p className="text-elevated-muted">{products.length} total products</p>
+          <p className="text-pc-muted">{products.length} total products</p>
         </div>
         <div className="flex flex-wrap items-center gap-3">
           {selectedExportIds.size > 0 && (
@@ -340,7 +340,7 @@ export default function AdminProductsPage() {
       </div>
 
       {importResult && (
-        <div className={`p-4 mb-6 rounded-xl border ${importResult.error ? 'bg-red-500/10 border-red-500/30 text-red-400' : 'bg-elevated-emerald/10 border-elevated-emerald/30 text-elevated-emerald'} flex justify-between items-start`}>
+        <div className={`p-4 mb-6 rounded-xl border ${importResult.error ? 'bg-red-500/10 border-red-500/30 text-red-400' : 'bg-pc-green/10 border-pc-green/30 text-pc-green'} flex justify-between items-start`}>
           <div>
             <h4 className="font-bold mb-1">{importResult.error ? 'Import Failed' : 'Import Complete'}</h4>
             {importResult.error ? (
@@ -369,7 +369,7 @@ export default function AdminProductsPage() {
       {/* Filters */}
       <div className="glass-card p-4 mb-6 flex flex-col sm:flex-row gap-4">
         <div className="flex-1 relative">
-          <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-elevated-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-pc-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
           </svg>
           <input type="text" placeholder="Search products..." value={search} onChange={(e) => setSearch(e.target.value)} className="input-field pl-10" />
@@ -386,7 +386,7 @@ export default function AdminProductsPage() {
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-elevated-border">
+              <tr className="border-b border-pc-border">
                 <th className="p-4 w-12 text-left">
                   <input 
                     type="checkbox"
@@ -398,17 +398,17 @@ export default function AdminProductsPage() {
                     }}
                   />
                 </th>
-                <th className="text-left p-4 text-elevated-muted text-xs font-semibold uppercase tracking-wider">Product</th>
-                <th className="text-left p-4 text-elevated-muted text-xs font-semibold uppercase tracking-wider">Category</th>
-                <th className="text-left p-4 text-elevated-muted text-xs font-semibold uppercase tracking-wider">Price</th>
-                <th className="text-left p-4 text-elevated-muted text-xs font-semibold uppercase tracking-wider">Stock</th>
-                <th className="text-left p-4 text-elevated-muted text-xs font-semibold uppercase tracking-wider">Visible</th>
-                <th className="text-right p-4 text-elevated-muted text-xs font-semibold uppercase tracking-wider">Actions</th>
+                <th className="text-left p-4 text-pc-muted text-xs font-semibold uppercase tracking-wider">Product</th>
+                <th className="text-left p-4 text-pc-muted text-xs font-semibold uppercase tracking-wider">Category</th>
+                <th className="text-left p-4 text-pc-muted text-xs font-semibold uppercase tracking-wider">Price</th>
+                <th className="text-left p-4 text-pc-muted text-xs font-semibold uppercase tracking-wider">Stock</th>
+                <th className="text-left p-4 text-pc-muted text-xs font-semibold uppercase tracking-wider">Visible</th>
+                <th className="text-right p-4 text-pc-muted text-xs font-semibold uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
             <tbody>
               {filtered.map((product) => (
-                <tr key={product.id} className="border-b border-elevated-border/50 hover:bg-elevated-card/50 transition-colors">
+                <tr key={product.id} className="border-b border-pc-border/50 hover:bg-pc-card/50 transition-colors">
                   <td className="p-4">
                     <input 
                       type="checkbox"
@@ -424,11 +424,11 @@ export default function AdminProductsPage() {
                   </td>
                   <td className="p-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-lg overflow-hidden bg-elevated-smoke flex-shrink-0">
+                      <div className="w-12 h-12 rounded-lg overflow-hidden bg-pc-smoke flex-shrink-0">
                         {product.image ? (
                           <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center text-elevated-border">
+                          <div className="w-full h-full flex items-center justify-center text-pc-border">
                             <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
                               <path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z" />
                             </svg>
@@ -439,12 +439,12 @@ export default function AdminProductsPage() {
                         <div className="flex items-center gap-2">
                           <p className="text-white font-semibold text-sm">{product.name}</p>
                           {product.isVisible === false && (
-                            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-elevated-smoke text-elevated-muted">
+                            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-pc-smoke text-pc-muted">
                               HIDDEN
                             </span>
                           )}
                         </div>
-                        <p className="text-elevated-muted text-xs">{product.weight}</p>
+                        <p className="text-pc-muted text-xs">{product.weight}</p>
                       </div>
                     </div>
                   </td>
@@ -473,7 +473,7 @@ export default function AdminProductsPage() {
                     <div className="flex gap-2 justify-end">
                       <button
                         onClick={() => { setEditProduct(product); setShowForm(true); }}
-                        className="px-3 py-1.5 rounded-lg text-xs font-medium text-elevated-muted hover:text-white hover:bg-elevated-card border border-elevated-border transition-all"
+                        className="px-3 py-1.5 rounded-lg text-xs font-medium text-pc-muted hover:text-white hover:bg-pc-card border border-pc-border transition-all"
                       >
                         Edit
                       </button>
@@ -492,7 +492,7 @@ export default function AdminProductsPage() {
         </div>
 
         {filtered.length === 0 && (
-          <div className="text-center py-12 text-elevated-muted">
+          <div className="text-center py-12 text-pc-muted">
             <p>No products found</p>
           </div>
         )}
@@ -513,7 +513,7 @@ export default function AdminProductsPage() {
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
           <div className="glass-card p-6 max-w-sm w-full text-center">
             <h3 className="text-lg font-bold text-white mb-2">Delete {deleteConfirm === 'bulk' ? `${selectedExportIds.size} Products` : 'Product'}?</h3>
-            <p className="text-elevated-muted text-sm mb-6">This action cannot be undone.</p>
+            <p className="text-pc-muted text-sm mb-6">This action cannot be undone.</p>
             <div className="flex gap-3">
               <button 
                 onClick={deleteConfirm === 'bulk' ? handleBulkDelete : () => handleDelete(deleteConfirm)} 
@@ -533,11 +533,11 @@ export default function AdminProductsPage() {
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in">
           <div className="glass-card p-6 max-w-4xl w-full flex flex-col max-h-[90vh]">
             <h3 className="text-xl font-bold text-white mb-2">Select Products to Import</h3>
-            <p className="text-elevated-muted text-sm mb-4">Choose which products from the CSV file you want to update or create.</p>
+            <p className="text-pc-muted text-sm mb-4">Choose which products from the CSV file you want to update or create.</p>
             
-            <div className="flex-1 overflow-auto border border-elevated-border rounded-xl bg-elevated-dark mb-4">
+            <div className="flex-1 overflow-auto border border-pc-border rounded-xl bg-pc-dark mb-4">
               <table className="w-full text-sm">
-                <thead className="sticky top-0 bg-elevated-dark z-10 shadow-sm border-b border-elevated-border">
+                <thead className="sticky top-0 bg-pc-dark z-10 shadow-sm border-b border-pc-border">
                   <tr>
                     <th className="p-3 text-left w-12">
                       <input 
@@ -550,10 +550,10 @@ export default function AdminProductsPage() {
                         }}
                       />
                     </th>
-                    <th className="p-3 text-left text-elevated-muted uppercase tracking-wider text-xs">Name</th>
-                    <th className="p-3 text-left text-elevated-muted uppercase tracking-wider text-xs">Category</th>
-                    <th className="p-3 text-left text-elevated-muted uppercase tracking-wider text-xs">Price</th>
-                    <th className="p-3 text-left text-elevated-muted uppercase tracking-wider text-xs">Action</th>
+                    <th className="p-3 text-left text-pc-muted uppercase tracking-wider text-xs">Name</th>
+                    <th className="p-3 text-left text-pc-muted uppercase tracking-wider text-xs">Category</th>
+                    <th className="p-3 text-left text-pc-muted uppercase tracking-wider text-xs">Price</th>
+                    <th className="p-3 text-left text-pc-muted uppercase tracking-wider text-xs">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -561,7 +561,7 @@ export default function AdminProductsPage() {
                     const isSelected = selectedImportIndices.has(index);
                     const isUpdate = p.id && products.some(existing => existing.id === p.id);
                     return (
-                      <tr key={index} className="border-b border-elevated-border/30 hover:bg-elevated-card/50">
+                      <tr key={index} className="border-b border-pc-border/30 hover:bg-pc-card/50">
                         <td className="p-3">
                           <input 
                             type="checkbox" 

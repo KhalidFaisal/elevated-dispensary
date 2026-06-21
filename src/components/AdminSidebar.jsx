@@ -77,12 +77,12 @@ export default function AdminSidebar({ onNavClick }) {
   };
 
   return (
-    <aside className="w-64 bg-elevated-dark border-r border-elevated-border h-full overflow-y-auto flex flex-col">
+    <aside className="w-64 bg-pc-dark border-r border-pc-border h-full overflow-y-auto flex flex-col">
       {/* Logo */}
-      <div className="p-6 border-b border-elevated-border">
+      <div className="p-6 border-b border-pc-border">
         <Link href="/" className="flex items-center gap-2 group">
           <svg
-            className="w-7 h-7 text-elevated-emerald transition-transform duration-300 group-hover:rotate-12"
+            className="w-7 h-7 text-pc-green transition-transform duration-300 group-hover:rotate-12"
             viewBox="0 0 24 24"
             fill="currentColor"
           >
@@ -90,7 +90,7 @@ export default function AdminSidebar({ onNavClick }) {
           </svg>
           <span className="text-lg font-black tracking-tight text-gradient">ELEVATED</span>
         </Link>
-        <p className="text-elevated-muted text-xs mt-1">Admin Dashboard</p>
+        <p className="text-pc-muted text-xs mt-1">Admin Dashboard</p>
       </div>
 
       {/* Nav items */}
@@ -104,8 +104,8 @@ export default function AdminSidebar({ onNavClick }) {
               onClick={onNavClick}
               className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 ${
                 isActive
-                  ? 'bg-elevated-emerald/10 text-elevated-emerald border border-elevated-emerald/20'
-                  : 'text-elevated-muted hover:text-white hover:bg-elevated-card'
+                  ? 'bg-pc-green/10 text-pc-green border border-pc-green/20'
+                  : 'text-pc-muted hover:text-white hover:bg-pc-card'
               }`}
             >
               {item.icon}
@@ -116,11 +116,11 @@ export default function AdminSidebar({ onNavClick }) {
       </nav>
 
       {/* Footer */}
-      <div className="p-4 border-t border-elevated-border space-y-2">
+      <div className="p-4 border-t border-pc-border space-y-2">
         <Link
           href="/"
           onClick={onNavClick}
-          className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-elevated-muted hover:text-white hover:bg-elevated-card transition-all duration-200"
+          className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-pc-muted hover:text-white hover:bg-pc-card transition-all duration-200"
         >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
