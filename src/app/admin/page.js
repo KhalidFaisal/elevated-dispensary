@@ -49,8 +49,7 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-md animate-fade-in-up">
         {/* Logo */}
         <div className="text-center mb-8">
-          <img src="/logo.png" alt="Perspective Collective" className="h-20 w-auto mx-auto mb-4 animate-float object-contain" />
-          <p className="text-pc-muted text-sm tracking-widest uppercase">Admin Dashboard</p>
+          <img src="/logo.png" alt="Perspective Collective" className="h-20 w-auto mx-auto animate-float object-contain" />
         </div>
 
         {/* Login form */}
