@@ -92,7 +92,9 @@ function HeroSection() {
         </p>
 
         <p className="text-lg text-pc-muted/80 max-w-xl mx-auto mb-10">
-          Premium flower and edibles, curated for the ultimate perspective shift.
+          Perspective Collective is more than weed, it's a way of life.<br/>
+          Different minds.<br/>
+          One collective vision.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
