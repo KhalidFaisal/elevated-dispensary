@@ -100,7 +100,7 @@ export default function MenuClient({ products, initialCategory, initialSearch })
                     }}
                     className={`px-4 py-2.5 text-sm font-medium transition-all ${
                       category === tab.value
-                        ? 'bg-pc-purple text-pc-green'
+                        ? 'bg-pc-green text-pc-black'
                         : 'text-pc-muted hover:text-white hover:bg-pc-card'
                     }`}
                     id={`category-${tab.value.toLowerCase()}`}
