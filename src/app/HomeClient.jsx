@@ -87,7 +87,7 @@ function HeroSection() {
           />
         </div>
 
-        <p className="text-xl md:text-2xl text-pc-green font-bold tracking-widest uppercase mb-8 glow-emerald text-gradient">
+        <p className="text-xl md:text-2xl text-pc-green font-bold tracking-widest uppercase mb-8 text-gradient">
           SEE IT. FEEL IT. LIVE IT.
         </p>
 
