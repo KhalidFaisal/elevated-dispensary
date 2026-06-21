@@ -188,7 +188,7 @@ function Footer() {
               Our products are not FDA approved to diagnose, treat, cure, or prevent any disease. All items comply with the U.S. Farm Bill and contain less than 0.3% THC. Intended for adult use only. THCa and other hemp-derived THC products are not shipped to states where restricted by law. Full disclaimer in <Link href="/terms" className="underline hover:text-white transition-colors">Terms of Service</Link>.
             </p>
           </div>
-          <p>© {new Date().getFullYear()} ELEVATED. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Perspective Collective. All rights reserved.</p>
         </div>
       </div>
     </footer>
@@ -240,7 +240,7 @@ export default function HomeClient({ featuredProducts, flowerProducts, ediblePro
         <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center glass-card p-10 md:p-16 glow-emerald">
             <h2 className="text-3xl md:text-5xl font-black mb-4 text-gradient">
-              Ready to get Elevated?
+              Ready to shift your Perspective?
             </h2>
             <p className="text-pc-muted text-lg mb-8">
               Browse our full menu and place your order for pickup.

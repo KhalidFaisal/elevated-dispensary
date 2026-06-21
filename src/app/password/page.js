@@ -33,24 +33,14 @@ export default function PasswordPage() {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(16,185,129,0.08)_0%,transparent_70%)]" />
 
       <div className="relative z-10 text-center px-6 max-w-md w-full animate-fade-in-up">
-        {/* Leaf icon */}
-        <div className="mb-6">
-          <svg
-            className="w-20 h-20 mx-auto text-pc-green animate-float"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-          >
-            <path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z" />
-          </svg>
+        {/* Logo */}
+        <div className="mb-8">
+          <img 
+            src="/logo.png" 
+            alt="Perspective Collective" 
+            className="w-64 mx-auto animate-float object-contain"
+          />
         </div>
-
-        {/* Brand */}
-        <h1 className="text-5xl font-black text-gradient mb-2 tracking-tight">
-          ELEVATED
-        </h1>
-        <p className="text-pc-muted text-sm mb-8 tracking-widest uppercase">
-          Rise Above
-        </p>
 
         {/* Password Form */}
         <div className="glass-card p-8 mb-6">
