@@ -15,11 +15,17 @@ export default async function MenuPage({ searchParams }) {
     orderBy: { createdAt: 'desc' },
   });
 
+  const categories = await prisma.category.findMany({
+    where: { isActive: true },
+    orderBy: { order: 'asc' },
+  });
+
   const enrichedProducts = await withProductDiscounts(products);
 
   return (
     <MenuClient
       products={JSON.parse(JSON.stringify(enrichedProducts))}
+      categories={JSON.parse(JSON.stringify(categories))}
       initialCategory={category}
       initialSearch={search}
     />

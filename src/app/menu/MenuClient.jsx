@@ -7,7 +7,7 @@ import ProductCard from '@/components/ProductCard';
 import { CartProvider } from '@/components/CartProvider';
 import Link from 'next/link';
 
-export default function MenuClient({ products, initialCategory, initialSearch }) {
+export default function MenuClient({ products, categories, initialCategory, initialSearch }) {
   const [category, setCategory] = useState(initialCategory || 'ALL');
   const [search, setSearch] = useState(initialSearch || '');
   const [sortBy, setSortBy] = useState('newest');
@@ -49,6 +49,10 @@ export default function MenuClient({ products, initialCategory, initialSearch })
     return result;
   }, [products, category, search, sortBy]);
 
+  const isFullMenuPage = !initialCategory || initialCategory === 'ALL';
+  const activeCategoryObj = categories?.find(c => c.slug === category);
+  const pageTitle = activeCategoryObj ? activeCategoryObj.name : 'Our Menu';
+
   return (
     <CartProvider>
       <Navbar />
@@ -58,7 +62,7 @@ export default function MenuClient({ products, initialCategory, initialSearch })
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="section-title">Our Menu</h1>
+            <h1 className="section-title">{pageTitle}</h1>
             <p className="section-subtitle">Browse our curated selection of premium products</p>
           </div>
 
@@ -87,28 +91,35 @@ export default function MenuClient({ products, initialCategory, initialSearch })
               </div>
 
               {/* Category tabs */}
-              <div className="flex rounded-xl overflow-hidden border border-pc-border">
-                {[
-                  { value: 'ALL', label: 'All' },
-                  { value: 'FLOWER', label: 'Flowers' },
-                  { value: 'EDIBLE', label: 'Edibles' },
-                ].map((tab) => (
+              {isFullMenuPage && (
+                <div className="flex rounded-xl overflow-hidden border border-pc-border">
                   <button
-                    key={tab.value}
-                    onClick={() => {
-                      setCategory(tab.value);
-                    }}
+                    onClick={() => setCategory('ALL')}
                     className={`px-4 py-2.5 text-sm font-medium transition-all ${
-                      category === tab.value
+                      category === 'ALL'
                         ? 'bg-pc-green text-pc-black'
                         : 'text-pc-muted hover:text-white hover:bg-pc-card'
                     }`}
-                    id={`category-${tab.value.toLowerCase()}`}
+                    id="category-all"
                   >
-                    {tab.label}
+                    All
                   </button>
-                ))}
-              </div>
+                  {categories?.map((cat) => (
+                    <button
+                      key={cat.id}
+                      onClick={() => setCategory(cat.slug)}
+                      className={`px-4 py-2.5 text-sm font-medium transition-all ${
+                        category === cat.slug
+                          ? 'bg-pc-green text-pc-black'
+                          : 'text-pc-muted hover:text-white hover:bg-pc-card'
+                      }`}
+                      id={`category-${cat.slug.toLowerCase()}`}
+                    >
+                      {cat.name}
+                    </button>
+                  ))}
+                </div>
+              )}
 
               {/* Sort */}
               <select
