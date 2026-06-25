@@ -6,6 +6,7 @@ import CannabisIcon from '@/components/icons/CannabisIcon';
 
 export default function AdminProductsPage() {
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editProduct, setEditProduct] = useState(null);
@@ -24,7 +25,18 @@ export default function AdminProductsPage() {
 
   useEffect(() => {
     fetchProducts();
+    fetchCategories();
   }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const res = await fetch('/api/categories');
+      const data = await res.json();
+      setCategories(data);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
 
   const fetchProducts = async () => {
     try {
@@ -376,8 +388,9 @@ export default function AdminProductsPage() {
         </div>
         <select value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)} className="select-field w-auto">
           <option value="ALL">All Categories</option>
-          <option value="FLOWER">Flower</option>
-          <option value="EDIBLE">Edibles</option>
+          {categories.map(c => (
+            <option key={c.id} value={c.slug}>{c.name}</option>
+          ))}
         </select>
       </div>
 
@@ -449,8 +462,12 @@ export default function AdminProductsPage() {
                     </div>
                   </td>
                   <td className="p-4">
-                    <span className={product.category === 'FLOWER' ? 'badge-hybrid' : 'badge-edible'}>
-                      {product.category === 'FLOWER' ? 'Flower' : 'Edible'}
+                    <span className={
+                      product.category === 'FLOWER' || product.category === 'flower' ? 'badge-hybrid' :
+                      product.category === 'EDIBLE' || product.category === 'edible' ? 'badge-edible' :
+                      'badge-indica'
+                    }>
+                      {categories.find(c => c.slug === product.category)?.name || product.category}
                     </span>
                   </td>
                   <td className="p-4 text-white font-semibold text-sm">${product.price.toFixed(2)}</td>
