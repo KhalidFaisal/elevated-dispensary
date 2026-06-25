@@ -90,35 +90,37 @@ export default function MenuClient({ products, categories, initialCategory, init
                 />
               </div>
 
-              {/* Category Dropdown */}
-              {isFullMenuPage && (
-                <select
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  className="select-field w-auto min-w-[160px]"
-                  id="category-select"
-                >
-                  <option value="ALL">All Categories</option>
-                  {categories?.map((cat) => (
-                    <option key={cat.id} value={cat.slug}>
-                      {cat.name}
-                    </option>
-                  ))}
-                </select>
-              )}
+              <div className="flex gap-4 w-full md:w-auto">
+                {/* Category Dropdown */}
+                {isFullMenuPage && (
+                  <select
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    className="select-field flex-1 md:w-auto min-w-[140px]"
+                    id="category-select"
+                  >
+                    <option value="ALL">All Categories</option>
+                    {categories?.map((cat) => (
+                      <option key={cat.id} value={cat.slug}>
+                        {cat.name}
+                      </option>
+                    ))}
+                  </select>
+                )}
 
-              {/* Sort */}
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="select-field w-auto min-w-[160px]"
-                id="sort-select"
-              >
-                <option value="newest">Newest</option>
-                <option value="price-low">Price: Low → High</option>
-                <option value="price-high">Price: High → Low</option>
-                <option value="name">Name: A → Z</option>
-              </select>
+                {/* Sort */}
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="select-field flex-1 md:w-auto min-w-[140px]"
+                  id="sort-select"
+                >
+                  <option value="newest">Newest</option>
+                  <option value="price-low">Price: Low → High</option>
+                  <option value="price-high">Price: High → Low</option>
+                  <option value="name">Name: A → Z</option>
+                </select>
+              </div>
             </div>
 
           </div>
