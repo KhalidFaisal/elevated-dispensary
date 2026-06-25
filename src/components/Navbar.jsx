@@ -79,6 +79,14 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [categories, setCategories] = useState([]);
+  
+  useEffect(() => {
+    fetch('/api/categories')
+      .then(res => res.json())
+      .then(data => setCategories(data || []))
+      .catch(console.error);
+  }, []);
   
   const searchContainerRef = useRef(null);
 
@@ -114,8 +122,11 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
             <Link href="/" className="text-sm font-medium text-pc-muted hover:text-white transition-colors">Home</Link>
             <Link href="/menu" className="text-sm font-medium text-pc-muted hover:text-white transition-colors">Menu</Link>
-            <Link href="/menu?category=FLOWER" className="text-sm font-medium text-pc-muted hover:text-white transition-colors">Flowers</Link>
-            <Link href="/menu?category=EDIBLE" className="text-sm font-medium text-pc-muted hover:text-white transition-colors">Edibles</Link>
+            {categories.map(cat => (
+              <Link key={cat.id} href={`/menu?category=${cat.slug}`} className="text-sm font-medium text-pc-muted hover:text-white transition-colors">
+                {cat.name}
+              </Link>
+            ))}
           </div>
 
           {/* Right side icons & Desktop Search */}
@@ -219,8 +230,11 @@ export default function Navbar() {
             <div className="flex flex-col gap-2">
               <Link href="/" onClick={() => setMobileOpen(false)} className="text-sm font-medium text-pc-muted hover:text-white transition-colors py-2">Home</Link>
               <Link href="/menu" onClick={() => setMobileOpen(false)} className="text-sm font-medium text-pc-muted hover:text-white transition-colors py-2">Menu</Link>
-              <Link href="/menu?category=FLOWER" onClick={() => setMobileOpen(false)} className="text-sm font-medium text-pc-muted hover:text-white transition-colors py-2">Flowers</Link>
-              <Link href="/menu?category=EDIBLE" onClick={() => setMobileOpen(false)} className="text-sm font-medium text-pc-muted hover:text-white transition-colors py-2">Edibles</Link>
+              {categories.map(cat => (
+                <Link key={cat.id} href={`/menu?category=${cat.slug}`} onClick={() => setMobileOpen(false)} className="text-sm font-medium text-pc-muted hover:text-white transition-colors py-2">
+                  {cat.name}
+                </Link>
+              ))}
             </div>
           </div>
         )}

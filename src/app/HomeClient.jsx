@@ -141,6 +141,48 @@ function ProductSection({ title, subtitle, products, viewAllHref, icon }) {
   );
 }
 
+function ShopByCategorySection({ categories }) {
+  if (!categories || categories.length === 0) return null;
+
+  return (
+    <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      <div className="flex items-end justify-between mb-10">
+        <div>
+          <h2 className="section-title">Shop by Category</h2>
+          <p className="section-subtitle">Explore our wide selection of products</p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+        {categories.map((cat) => (
+          <Link
+            key={cat.id}
+            href={`/menu?category=${cat.slug}`}
+            className="group block relative rounded-2xl overflow-hidden aspect-square bg-pc-smoke border border-pc-border hover:border-pc-green/50 transition-colors"
+          >
+            {cat.image ? (
+              <img
+                src={cat.image}
+                alt={cat.name}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center bg-pc-dark">
+                <span className="text-pc-muted font-medium">No Image</span>
+              </div>
+            )}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 translate-y-2 group-hover:translate-y-0 transition-transform">
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-1 drop-shadow-md">{cat.name}</h3>
+              <p className="text-pc-green text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity drop-shadow-md">Shop Now →</p>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function Footer() {
   return (
     <footer className="border-t border-pc-border bg-pc-dark/50">
@@ -191,7 +233,7 @@ function Footer() {
   );
 }
 
-export default function HomeClient({ featuredProducts, flowerProducts, edibleProducts, banners }) {
+export default function HomeClient({ featuredProducts, categories, banners }) {
   return (
     <CartProvider>
       <Navbar />
@@ -214,23 +256,8 @@ export default function HomeClient({ featuredProducts, flowerProducts, ediblePro
           <div className="h-px bg-gradient-to-r from-transparent via-pc-border to-transparent" />
         </div>
 
-        {/* Flower */}
-        <ProductSection
-          title="Flowers"
-          subtitle="Hand-selected premium buds"
-          products={flowerProducts}
-          viewAllHref="/menu?category=FLOWER"
-          icon={<CannabisIcon className="w-6 h-6 text-pc-green" />}
-        />
-
-        {/* Edibles */}
-        <ProductSection
-          title="Edibles"
-          subtitle="Delicious infused treats"
-          products={edibleProducts}
-          viewAllHref="/menu?category=EDIBLE"
-          icon={<svg className="w-6 h-6 text-pink-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" /></svg>}
-        />
+        {/* Shop By Category */}
+        <ShopByCategorySection categories={categories} />
 
         {/* CTA Banner */}
         <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8">

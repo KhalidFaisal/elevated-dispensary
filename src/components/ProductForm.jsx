@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function ProductForm({ product, token, onSave, onCancel }) {
   const isEdit = !!product;
@@ -16,6 +16,24 @@ export default function ProductForm({ product, token, onSave, onCancel }) {
     featured: product?.featured || false,
     isVisible: product?.isVisible ?? true,
   });
+
+  const [categories, setCategories] = useState([]);
+  
+  useEffect(() => {
+    const fetchCats = async () => {
+      try {
+        const res = await fetch('/api/categories');
+        const data = await res.json();
+        setCategories(data);
+        if (!product?.category && data.length > 0) {
+          setForm(prev => ({ ...prev, category: data[0].slug }));
+        }
+      } catch (err) {
+        console.error('Failed to fetch categories', err);
+      }
+    };
+    fetchCats();
+  }, [product?.category]);
 
   const [images, setImages] = useState(() => {
     try {
@@ -132,8 +150,16 @@ export default function ProductForm({ product, token, onSave, onCancel }) {
           <div>
             <label className="block text-sm font-medium text-pc-muted mb-1">Category *</label>
             <select name="category" value={form.category} onChange={handleChange} className="select-field">
-              <option value="FLOWER">Flower</option>
-              <option value="EDIBLE">Edible</option>
+              {categories.length > 0 ? (
+                categories.map(cat => (
+                  <option key={cat.id} value={cat.slug}>{cat.name}</option>
+                ))
+              ) : (
+                <>
+                  <option value="FLOWER">Flower</option>
+                  <option value="EDIBLE">Edible</option>
+                </>
+              )}
             </select>
           </div>
 

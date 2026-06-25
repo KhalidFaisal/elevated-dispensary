@@ -12,21 +12,12 @@ export default async function HomePage() {
     orderBy: { createdAt: 'desc' },
   });
 
-  const flowerProducts = await prisma.product.findMany({
-    where: { category: 'FLOWER', stock: { gt: 0 } },
-    take: 4,
-    orderBy: { createdAt: 'desc' },
-  });
-
-  const edibleProducts = await prisma.product.findMany({
-    where: { category: 'EDIBLE', stock: { gt: 0 } },
-    take: 4,
-    orderBy: { createdAt: 'desc' },
+  const categories = await prisma.category.findMany({
+    where: { isActive: true },
+    orderBy: { order: 'asc' },
   });
 
   const enrichedFeatured = await withProductDiscounts(featuredProducts);
-  const enrichedFlower = await withProductDiscounts(flowerProducts);
-  const enrichedEdible = await withProductDiscounts(edibleProducts);
 
   const activeBanners = await prisma.banner.findMany({
     where: { isActive: true },
@@ -36,8 +27,7 @@ export default async function HomePage() {
   return (
     <HomeClient
       featuredProducts={JSON.parse(JSON.stringify(enrichedFeatured))}
-      flowerProducts={JSON.parse(JSON.stringify(enrichedFlower))}
-      edibleProducts={JSON.parse(JSON.stringify(enrichedEdible))}
+      categories={JSON.parse(JSON.stringify(categories))}
       banners={JSON.parse(JSON.stringify(activeBanners))}
     />
   );
