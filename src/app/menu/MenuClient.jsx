@@ -90,35 +90,21 @@ export default function MenuClient({ products, categories, initialCategory, init
                 />
               </div>
 
-              {/* Category tabs */}
+              {/* Category Dropdown */}
               {isFullMenuPage && (
-                <div className="flex rounded-xl overflow-hidden border border-pc-border">
-                  <button
-                    onClick={() => setCategory('ALL')}
-                    className={`px-4 py-2.5 text-sm font-medium transition-all ${
-                      category === 'ALL'
-                        ? 'bg-pc-green text-pc-black'
-                        : 'text-pc-muted hover:text-white hover:bg-pc-card'
-                    }`}
-                    id="category-all"
-                  >
-                    All
-                  </button>
+                <select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  className="select-field w-auto min-w-[160px]"
+                  id="category-select"
+                >
+                  <option value="ALL">All Categories</option>
                   {categories?.map((cat) => (
-                    <button
-                      key={cat.id}
-                      onClick={() => setCategory(cat.slug)}
-                      className={`px-4 py-2.5 text-sm font-medium transition-all ${
-                        category === cat.slug
-                          ? 'bg-pc-green text-pc-black'
-                          : 'text-pc-muted hover:text-white hover:bg-pc-card'
-                      }`}
-                      id={`category-${cat.slug.toLowerCase()}`}
-                    >
+                    <option key={cat.id} value={cat.slug}>
                       {cat.name}
-                    </button>
+                    </option>
                   ))}
-                </div>
+                </select>
               )}
 
               {/* Sort */}
