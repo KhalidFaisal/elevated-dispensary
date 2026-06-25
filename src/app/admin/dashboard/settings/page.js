@@ -299,7 +299,7 @@ export default function SettingsPage() {
         <form onSubmit={handleTimezoneSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-pc-muted mb-1">Store Timezone (IANA Format)</label>
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <select
                 value={timezone}
                 onChange={(e) => setTimezone(e.target.value)}
