@@ -1,5 +1,11 @@
+import localFont from 'next/font/local';
 import { Inter } from 'next/font/google';
 import './globals.css';
+
+const customFont = localFont({
+  src: './fonts/file.otf',
+  variable: '--font-custom',
+});
 
 const inter = Inter({
   variable: '--font-inter',
@@ -18,7 +24,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${inter.variable} antialiased`}>
+    <html lang="en" className={`${inter.variable} ${customFont.variable} antialiased`}>
       <body className="min-h-screen bg-pc-black text-white font-sans">
         {children}
       </body>
