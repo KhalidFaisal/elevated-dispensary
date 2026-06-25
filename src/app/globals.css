@@ -7,6 +7,9 @@
 @layer base {
   * {
     box-sizing: border-box;
+    -webkit-text-stroke: 0px transparent !important;
+    text-stroke: 0px transparent !important;
+    font-synthesis: none !important;
   }
 
   html {
@@ -17,6 +20,10 @@
     background-color: #0a0a0a;
     color: #ededed;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-text-stroke: 0px transparent !important;
+    text-stroke: 0px transparent !important;
+    font-synthesis: none !important;
+    text-rendering: optimizeLegibility;
   }
 
   /* Custom scrollbar */
