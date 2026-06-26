@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import CartDrawer from '@/components/CartDrawer';
 import ProductCard from '@/components/ProductCard';
@@ -80,10 +81,13 @@ function HeroSection() {
       <div className="relative z-10 text-center px-6 max-w-4xl mx-auto animate-fade-in-up">
         {/* Logo Image */}
         <div className="mb-8">
-          <img 
+          <Image 
             src="/logo.png" 
             alt="Holybuds" 
-            className="w-[80%] max-w-3xl mx-auto drop-shadow-[0_0_30px_rgba(152,227,44,0.3)] animate-float"
+            width={1200}
+            height={400}
+            className="w-[80%] max-w-3xl mx-auto drop-shadow-[0_0_30px_rgba(152,227,44,0.3)] animate-float h-auto"
+            priority
           />
         </div>
 
@@ -190,7 +194,7 @@ function Footer({ categories }) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <img src="/logo.png" alt="Holybuds" className="h-10 w-auto object-contain" />
+              <Image src="/logo.png" alt="Holybuds" width={400} height={100} className="h-10 w-auto object-contain" />
             </div>
             <p className="text-pc-muted text-sm">
               Holybuds is your ultimate destination for premium cannabis. Elevate your experience with our carefully curated selection.

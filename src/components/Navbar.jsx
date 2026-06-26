@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useCart } from './CartProvider';
 import { useState, useEffect, useRef } from 'react';
 
@@ -110,9 +111,12 @@ export default function Navbar() {
           {/* Logo (hidden on mobile if search is open) */}
           <div className={`${mobileSearchOpen ? 'hidden sm:flex' : 'flex'} items-center`}>
             <Link href="/" className="flex items-center gap-2 group">
-              <img 
+              <Image 
                 src="/logo.png" 
                 alt="Holybuds" 
+                width={400}
+                height={100}
+                priority
                 className="h-10 w-auto transition-transform duration-300 group-hover:scale-105" 
               />
             </Link>
