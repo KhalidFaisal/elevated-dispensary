@@ -11,6 +11,7 @@ export default function AdminOrdersPage() {
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState('ALL');
   const [expandedOrder, setExpandedOrder] = useState(null);
+  const [copiedOrderId, setCopiedOrderId] = useState(null);
 
   const [storeTimezone, setStoreTimezone] = useState('UTC');
 
@@ -74,6 +75,34 @@ export default function AdminOrdersPage() {
       }
     } catch (error) {
       console.error('Error updating order:', error);
+    }
+  };
+
+  const copyOrderDetails = async (order) => {
+    let text = `Order #${order.orderNumber}\n`;
+    text += `Name: ${order.customerName}\n`;
+    text += `Method: ${order.deliveryMethod === 'DELIVERY' ? 'Delivery' : 'Pickup'}\n`;
+    if (order.deliveryMethod === 'DELIVERY' && order.deliveryAddress) {
+      text += `Address: ${order.deliveryAddress}\n`;
+    }
+    if (order.notes) {
+      text += `Notes: ${order.notes}\n`;
+    }
+    text += `\nItems:\n`;
+    order.items?.forEach(item => {
+      text += `- ${item.product?.name || 'Unknown'} x${item.quantity} ($${(item.price * item.quantity).toFixed(2)})\n`;
+    });
+    if (order.discountAmount > 0) {
+      text += `Discount: -${order.discountAmount.toFixed(2)}\n`;
+    }
+    text += `Total: $${order.total.toFixed(2)}\n`;
+    
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedOrderId(order.id);
+      setTimeout(() => setCopiedOrderId(null), 2000);
+    } catch (err) {
+      console.error('Failed to copy', err);
     }
   };
 
@@ -172,7 +201,25 @@ export default function AdminOrdersPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Customer info */}
                     <div>
-                      <h4 className="text-sm font-semibold text-pc-muted uppercase tracking-wider mb-3">Customer Info</h4>
+                      <div className="flex justify-between items-center mb-3">
+                        <h4 className="text-sm font-semibold text-pc-muted uppercase tracking-wider">Customer Info</h4>
+                        <button 
+                          onClick={() => copyOrderDetails(order)}
+                          className="flex items-center gap-1 text-xs text-pc-muted hover:text-white transition-colors"
+                        >
+                          {copiedOrderId === order.id ? (
+                            <>
+                              <svg className="w-3.5 h-3.5 text-pc-green" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                              <span className="text-pc-green">Copied!</span>
+                            </>
+                          ) : (
+                            <>
+                              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" /></svg>
+                              Copy Details
+                            </>
+                          )}
+                        </button>
+                      </div>
                       <div className="space-y-2 text-sm">
                         <p><span className="text-pc-muted">Name:</span> <span className="text-white">{order.customerName}</span></p>
                         <p><span className="text-pc-muted">Phone:</span> <span className="text-white">{order.customerPhone}</span></p>
