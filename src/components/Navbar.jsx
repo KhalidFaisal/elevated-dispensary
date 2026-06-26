@@ -45,7 +45,7 @@ function SearchDropdown({ query, onSelect }) {
               className="flex items-center gap-3 p-3 hover:bg-pc-card transition-colors border-b border-pc-border/50 last:border-0"
             >
               {product.image ? (
-                <img src={product.image} alt={product.name} className="w-10 h-10 rounded-lg object-cover bg-pc-smoke" />
+                <Image src={product.image} alt={product.name} width={40} height={40} className="w-10 h-10 rounded-lg object-cover bg-pc-smoke" />
               ) : (
                 <div className="w-10 h-10 rounded-lg bg-pc-smoke flex items-center justify-center">
                   <svg className="w-5 h-5 text-pc-muted" viewBox="0 0 24 24" fill="currentColor">

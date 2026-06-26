@@ -2,6 +2,7 @@
 
 import { useCart } from './CartProvider';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function CartDrawer() {
   const { items, isOpen, setIsOpen, removeItem, updateQuantity, subtotal, discountAmount, discountName, total } = useCart();
@@ -54,7 +55,7 @@ export default function CartDrawer() {
                   {/* Image */}
                   <div className="w-16 h-16 rounded-lg overflow-hidden bg-pc-smoke flex-shrink-0">
                     {item.image ? (
-                      <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                      <Image src={item.image} alt={item.name} width={64} height={64} className="w-full h-full object-cover" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
                         <svg className="w-8 h-8 text-pc-border" viewBox="0 0 24 24" fill="currentColor">

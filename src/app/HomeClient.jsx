@@ -34,14 +34,12 @@ function BannerCarousel({ banners }) {
             }`}
           >
             <Link href={banner.link || '#'} className="block w-full h-full cursor-pointer">
-              <picture>
-                <source media="(min-width: 768px)" srcSet={banner.desktopImage || banner.mobileImage} />
-                <img
-                  src={banner.mobileImage || banner.desktopImage}
-                  alt={banner.title}
-                  className="w-full h-auto object-contain"
-                />
-              </picture>
+              <div className="md:hidden block w-full h-full">
+                 <Image src={banner.mobileImage || banner.desktopImage} alt={banner.title} width={800} height={800} className="w-full h-auto object-contain" priority={i === 0} />
+               </div>
+               <div className="hidden md:block w-full h-full">
+                 <Image src={banner.desktopImage || banner.mobileImage} alt={banner.title} width={1600} height={600} className="w-full h-auto object-contain" priority={i === 0} />
+               </div>
             </Link>
           </div>
         ))}
@@ -165,10 +163,12 @@ function ShopByCategorySection({ categories }) {
             className="group block relative rounded-2xl overflow-hidden aspect-square bg-pc-smoke border border-pc-border hover:border-pc-green/50 transition-colors"
           >
             {cat.image ? (
-              <img
+              <Image
                 src={cat.image}
                 alt={cat.name}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                fill
+                sizes="(max-width: 768px) 50vw, 33vw"
+                className="object-cover transition-transform duration-700 group-hover:scale-110"
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center bg-pc-dark">

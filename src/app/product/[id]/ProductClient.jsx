@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import CartDrawer from '@/components/CartDrawer';
 import { CartProvider, useCart } from '@/components/CartProvider';
@@ -42,10 +43,13 @@ function ProductDetails({ product }) {
             <div className="lg:col-span-2 flex flex-col bg-pc-dark border-r border-pc-border">
               <div className="relative aspect-square md:aspect-auto flex-1">
                 {mainImage ? (
-                  <img
+                  <Image
                     src={mainImage}
                     alt={product.name}
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 40vw"
+                    className="object-cover"
+                    priority
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center min-h-[400px]">
@@ -77,7 +81,7 @@ function ProductDetails({ product }) {
                         mainImage === img ? 'border-pc-green opacity-100' : 'border-transparent opacity-60 hover:opacity-100 hover:border-pc-border'
                       }`}
                     >
-                      <img src={img} alt={`${product.name} ${i+1}`} className="w-full h-full object-cover" />
+                      <Image src={img} alt={`${product.name} ${i+1}`} fill sizes="20vw" className="object-cover" />
                     </button>
                   ))}
                 </div>
