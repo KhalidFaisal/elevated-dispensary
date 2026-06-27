@@ -139,28 +139,34 @@ export default function AdminOrdersPage() {
       const customerName = order.customerName || '';
 
       if (order.items && order.items.length > 0) {
-        order.items.forEach(item => {
+        let remainingTotal = order.total;
+        const subtotal = order.total + (order.discountAmount || 0);
+
+        order.items.forEach((item, index) => {
           const itemName = item.product?.name || 'Unknown';
           const quantity = item.quantity;
-          const lineTotal = (item.price * item.quantity).toFixed(2);
+          
+          let lineTotal;
+          if (index === order.items.length - 1) {
+            // Assign remaining total to last item to fix rounding errors
+            lineTotal = remainingTotal;
+          } else {
+            const itemOriginalTotal = item.price * item.quantity;
+            if (subtotal <= 0) {
+              lineTotal = 0;
+            } else {
+              lineTotal = Math.round(((itemOriginalTotal / subtotal) * order.total) * 100) / 100;
+            }
+            remainingTotal -= lineTotal;
+          }
           
           rows.push([
             `"${itemName.replace(/"/g, '""')}"`,
             quantity,
-            `"${lineTotal}"`,
+            `"${lineTotal.toFixed(2)}"`,
             `"${customerName.replace(/"/g, '""')}"`
           ]);
         });
-      }
-
-      if (order.discountAmount > 0) {
-        const discountName = order.discountName || 'Discount';
-        rows.push([
-          `"Discount: ${discountName.replace(/"/g, '""')}"`,
-          1,
-          `"-${order.discountAmount.toFixed(2)}"`,
-          `"${customerName.replace(/"/g, '""')}"`
-        ]);
       }
     });
 
