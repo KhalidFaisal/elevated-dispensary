@@ -20,6 +20,9 @@ export default function AdminProductsPage() {
   const [parsedImportProducts, setParsedImportProducts] = useState(null);
   const [selectedImportIndices, setSelectedImportIndices] = useState(new Set());
   const [selectedExportIds, setSelectedExportIds] = useState(new Set());
+  
+  const [currentPage, setCurrentPage] = useState(1);
+  const ITEMS_PER_PAGE = 20;
 
   const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : '';
 
@@ -295,6 +298,13 @@ export default function AdminProductsPage() {
     return true;
   });
 
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE) || 1;
+  const paginatedProducts = filtered.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filterCategory, search]);
+
   const stockColor = (stock) => {
     if (stock === 0) return 'text-red-400 bg-red-500/10';
     if (stock <= 5) return 'text-yellow-400 bg-yellow-500/10';
@@ -420,7 +430,7 @@ export default function AdminProductsPage() {
               </tr>
             </thead>
             <tbody>
-              {filtered.map((product) => (
+              {paginatedProducts.map((product) => (
                 <tr key={product.id} className="border-b border-pc-border/50 hover:bg-pc-card/50 transition-colors">
                   <td className="p-4">
                     <input 
@@ -514,6 +524,28 @@ export default function AdminProductsPage() {
           </div>
         )}
       </div>
+      
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between mt-6 glass-card p-4">
+          <button
+            onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+            disabled={currentPage === 1}
+            className="px-4 py-2 bg-pc-dark border border-pc-border text-white rounded-lg disabled:opacity-50 hover:bg-pc-border transition-colors font-medium text-sm"
+          >
+            Previous
+          </button>
+          <span className="text-pc-muted text-sm font-medium">
+            Page <span className="text-white">{currentPage}</span> of <span className="text-white">{totalPages}</span>
+          </span>
+          <button
+            onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 bg-pc-dark border border-pc-border text-white rounded-lg disabled:opacity-50 hover:bg-pc-border transition-colors font-medium text-sm"
+          >
+            Next
+          </button>
+        </div>
+      )}
 
       {/* Product Form Modal */}
       {showForm && (

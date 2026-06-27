@@ -14,6 +14,11 @@ export default function AdminOrdersPage() {
   const [copiedOrderId, setCopiedOrderId] = useState(null);
   const [selectedOrders, setSelectedOrders] = useState([]);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const ITEMS_PER_PAGE = 20;
+
   const [storeTimezone, setStoreTimezone] = useState('UTC');
 
   const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : '';
@@ -107,7 +112,32 @@ export default function AdminOrdersPage() {
     }
   };
 
-  const filtered = statusFilter === 'ALL' ? orders : orders.filter((o) => o.status === statusFilter);
+  const filtered = orders.filter((o) => {
+    if (statusFilter !== 'ALL' && o.status !== statusFilter) return false;
+    
+    if (startDate) {
+      const orderDate = new Date(o.createdAt);
+      const sDate = new Date(startDate);
+      sDate.setHours(0, 0, 0, 0);
+      if (orderDate < sDate) return false;
+    }
+    
+    if (endDate) {
+      const orderDate = new Date(o.createdAt);
+      const eDate = new Date(endDate);
+      eDate.setHours(23, 59, 59, 999);
+      if (orderDate > eDate) return false;
+    }
+    
+    return true;
+  });
+
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE) || 1;
+  const paginatedOrders = filtered.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [statusFilter, startDate, endDate]);
 
   const handleSelectAll = (e) => {
     if (e.target.checked) {
@@ -218,24 +248,58 @@ export default function AdminOrdersPage() {
         </div>
       </div>
 
-      {/* Status tabs */}
-      <div className="flex flex-wrap gap-2 mb-6">
-        {STATUSES.map((status) => {
-          const count = status === 'ALL' ? orders.length : orders.filter((o) => o.status === status).length;
-          return (
-            <button
-              key={status}
-              onClick={() => setStatusFilter(status)}
-              className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
-                statusFilter === status
-                  ? 'bg-pc-green text-pc-black'
-                  : 'text-pc-muted hover:text-white hover:bg-pc-card border border-pc-border'
-              }`}
+      {/* Filters */}
+      <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 mb-6">
+        <div className="flex flex-wrap gap-2">
+          {STATUSES.map((status) => {
+            const count = status === 'ALL' ? orders.length : orders.filter((o) => o.status === status).length;
+            return (
+              <button
+                key={status}
+                onClick={() => setStatusFilter(status)}
+                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                  statusFilter === status
+                    ? 'bg-pc-green text-pc-black'
+                    : 'text-pc-muted hover:text-white hover:bg-pc-card border border-pc-border'
+                }`}
+              >
+                {status === 'ALL' ? 'All' : status.charAt(0) + status.slice(1).toLowerCase()} ({count})
+              </button>
+            );
+          })}
+        </div>
+        
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="flex items-center bg-pc-card border border-pc-border rounded-lg px-3 py-1">
+            <span className="text-xs text-pc-muted font-semibold uppercase mr-2">From</span>
+            <input 
+              type="date" 
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              className="bg-transparent text-white text-sm focus:outline-none focus:ring-0 outline-none"
+            />
+          </div>
+          <div className="flex items-center bg-pc-card border border-pc-border rounded-lg px-3 py-1">
+            <span className="text-xs text-pc-muted font-semibold uppercase mr-2">To</span>
+            <input 
+              type="date" 
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              className="bg-transparent text-white text-sm focus:outline-none focus:ring-0 outline-none"
+            />
+          </div>
+          {(startDate || endDate) && (
+            <button 
+              onClick={() => { setStartDate(''); setEndDate(''); }}
+              className="text-pc-muted hover:text-white transition-colors"
+              title="Clear dates"
             >
-              {status === 'ALL' ? 'All' : status.charAt(0) + status.slice(1).toLowerCase()} ({count})
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
             </button>
-          );
-        })}
+          )}
+        </div>
       </div>
       
       {filtered.length > 0 && (
@@ -259,7 +323,7 @@ export default function AdminOrdersPage() {
         </div>
       ) : (
         <div className="space-y-4">
-          {filtered.map((order) => (
+          {paginatedOrders.map((order) => (
             <div key={order.id} className="glass-card overflow-hidden">
               {/* Order Header */}
               <div className="flex w-full hover:bg-pc-card/30 transition-colors">
@@ -403,6 +467,28 @@ export default function AdminOrdersPage() {
               )}
             </div>
           ))}
+        </div>
+      )}
+
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between mt-8 glass-card p-4">
+          <button
+            onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+            disabled={currentPage === 1}
+            className="px-4 py-2 bg-pc-dark border border-pc-border text-white rounded-lg disabled:opacity-50 hover:bg-pc-border transition-colors font-medium text-sm"
+          >
+            Previous
+          </button>
+          <span className="text-pc-muted text-sm font-medium">
+            Page <span className="text-white">{currentPage}</span> of <span className="text-white">{totalPages}</span>
+          </span>
+          <button
+            onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 bg-pc-dark border border-pc-border text-white rounded-lg disabled:opacity-50 hover:bg-pc-border transition-colors font-medium text-sm"
+          >
+            Next
+          </button>
         </div>
       )}
     </div>
