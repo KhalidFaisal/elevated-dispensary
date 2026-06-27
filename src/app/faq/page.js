@@ -65,13 +65,7 @@ export default function FAQPage() {
             ))}
           </div>
 
-          <div className="mt-12 text-center p-8 bg-pc-card/50 rounded-2xl border border-pc-border">
-            <h3 className="text-lg font-bold text-black mb-2">Still have questions?</h3>
-            <p className="text-pc-muted mb-6">We're here to help! Feel free to reach out to our support team.</p>
-            <Link href="/" className="btn-primary inline-block">
-              Contact Us
-            </Link>
-          </div>
+
         </div>
       </div>
     </CartProvider>
