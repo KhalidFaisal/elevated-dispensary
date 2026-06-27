@@ -17,13 +17,18 @@
   }
 
   body {
-    background-color: #0a0a0a;
-    color: #ededed;
+    background-color: #ffffff;
+    color: #22c72c;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     -webkit-text-stroke: 0px transparent !important;
     text-stroke: 0px transparent !important;
     font-synthesis: none !important;
     text-rendering: optimizeLegibility;
+  }
+
+  /* Force white text class to be green in light theme */
+  .text-white {
+    color: #22c72c !important;
   }
 
   /* Custom scrollbar */

@@ -9,19 +9,19 @@ module.exports = {
     extend: {
       colors: {
         pc: {
-          black: '#0a0a0a',
-          dark: '#111111',
-          smoke: '#1a1a2e',
-          card: '#161625',
+          black: '#ffffff',     // mapped to white
+          dark: '#f9fafb',      // mapped to off-white
+          smoke: '#f3f4f6',     // mapped to light gray
+          card: '#ffffff',      // mapped to white
           green: '#22c72c',
           'green-dark': '#1a9421',
           'green-light': '#3ddb47',
           gold: '#faa500',
           'gold-dark': '#d38b00',
           'gold-light': '#f8ca31',
-          muted: '#6b7280',
-          border: '#2a2a3e',
-          'border-light': '#3a3a4e',
+          muted: '#4b5563',     // darker gray for contrast
+          border: '#faa500',    // mapped to gold for gold outlines
+          'border-light': '#f8ca31',
         },
       },
       fontFamily: {
