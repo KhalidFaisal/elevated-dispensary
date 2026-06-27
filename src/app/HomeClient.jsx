@@ -206,6 +206,7 @@ function Footer({ categories }) {
             <h4 className="font-semibold text-white mb-4">Quick Links</h4>
             <div className={`grid ${categories && categories.length >= 5 ? 'grid-cols-2' : 'grid-cols-1'} gap-x-4 gap-y-2`}>
               <Link href="/menu" className="block text-pc-muted text-sm hover:text-white transition-colors">Full Menu</Link>
+              <Link href="/faq" className="block text-pc-muted text-sm hover:text-white transition-colors">FAQ</Link>
               {categories?.map(cat => (
                 <Link key={cat.id} href={`/menu?category=${cat.slug}`} className="block text-pc-muted text-sm hover:text-white transition-colors">
                   {cat.name}
