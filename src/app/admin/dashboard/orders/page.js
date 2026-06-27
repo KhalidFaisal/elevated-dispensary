@@ -84,6 +84,45 @@ export default function AdminOrdersPage() {
     }
   };
 
+  const deleteOrder = async (orderId) => {
+    if (!window.confirm('Are you sure you want to permanently delete this order?')) return;
+    try {
+      const res = await fetch(`/api/orders/${orderId}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.ok) {
+        setOrders(prev => prev.filter(o => o.id !== orderId));
+        setSelectedOrders(prev => prev.filter(id => id !== orderId));
+        if (expandedOrder === orderId) setExpandedOrder(null);
+      }
+    } catch (e) {
+      console.error('Error deleting order', e);
+    }
+  };
+
+  const deleteSelectedOrders = async () => {
+    if (selectedOrders.length === 0) return;
+    if (!window.confirm(`Are you sure you want to delete ${selectedOrders.length} orders?`)) return;
+    
+    // Process sequentially to not overload DB/API
+    for (const id of selectedOrders) {
+      try {
+        const res = await fetch(`/api/orders/${id}`, {
+          method: 'DELETE',
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (res.ok) {
+          setOrders(prev => prev.filter(o => o.id !== id));
+        }
+      } catch (e) {
+        console.error(`Error deleting order ${id}`, e);
+      }
+    }
+    setSelectedOrders([]);
+    setExpandedOrder(null);
+  };
+
   const copyOrderDetails = async (order) => {
     let text = `Order #${order.orderNumber}\n`;
     text += `Name: ${order.customerName}\n`;
@@ -248,12 +287,20 @@ export default function AdminOrdersPage() {
         </div>
         <div className="flex gap-2">
           {selectedOrders.length > 0 && (
-            <button 
-              onClick={exportSelectedOrders}
-              className="px-4 py-2 bg-pc-green text-black rounded-xl font-bold hover:bg-pc-green/90 transition-colors text-sm"
-            >
-              Export Selected ({selectedOrders.length})
-            </button>
+            <>
+              <button 
+                onClick={deleteSelectedOrders}
+                className="px-4 py-2 bg-red-500/20 text-red-500 border border-red-500/50 rounded-xl font-bold hover:bg-red-500 hover:text-white transition-colors text-sm"
+              >
+                Delete Selected ({selectedOrders.length})
+              </button>
+              <button 
+                onClick={exportSelectedOrders}
+                className="px-4 py-2 bg-pc-green text-black rounded-xl font-bold hover:bg-pc-green/90 transition-colors text-sm"
+              >
+                Export Selected ({selectedOrders.length})
+              </button>
+            </>
           )}
         </div>
       </div>
@@ -439,6 +486,15 @@ export default function AdminOrdersPage() {
                             {s.charAt(0) + s.slice(1).toLowerCase()}
                           </button>
                         ))}
+                      </div>
+                      
+                      <div className="mt-4 pt-4 border-t border-pc-border/50">
+                        <button
+                          onClick={() => deleteOrder(order.id)}
+                          className="px-3 py-1.5 rounded-lg text-xs font-bold text-red-500 border border-red-500/50 hover:bg-red-500 hover:text-white transition-colors"
+                        >
+                          Delete Order
+                        </button>
                       </div>
                     </div>
                   </div>
