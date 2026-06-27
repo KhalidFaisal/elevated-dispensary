@@ -4,6 +4,7 @@ import Navbar from '@/components/Navbar';
 import CartDrawer from '@/components/CartDrawer';
 import { CartProvider } from '@/components/CartProvider';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function TermsPage() {
   return (
@@ -18,6 +19,17 @@ export default function TermsPage() {
           </svg>
           Back to Home
         </Link>
+        
+        <div className="w-full relative h-64 sm:h-80 md:h-96 rounded-2xl overflow-hidden mb-8 shadow-xl border border-pc-border">
+          <Image 
+            src="/Terms.png" 
+            alt="Terms and Conditions Cover" 
+            fill
+            className="object-cover"
+            priority
+          />
+        </div>
+
         <h1 className="text-4xl font-black text-white mb-4">Terms of Service & Disclaimer</h1>
         <p className="text-xl text-pc-muted mb-12">Keep scrolling to experience why we are New York's number one source.</p>
         
