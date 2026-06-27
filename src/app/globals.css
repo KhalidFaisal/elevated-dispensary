@@ -58,7 +58,7 @@
   }
 
   .btn-primary {
-    @apply bg-pc-green text-pc-black font-bold px-6 py-3 rounded-xl transition-all duration-300 hover:bg-pc-green-dark hover:shadow-lg hover:shadow-pc-green/25 active:scale-95;
+    @apply bg-pc-green text-black font-bold px-6 py-3 rounded-xl transition-all duration-300 hover:bg-pc-green-dark hover:shadow-lg hover:shadow-pc-green/25 active:scale-95;
   }
 
   .btn-secondary {
@@ -66,7 +66,7 @@
   }
 
   .btn-gold {
-    @apply bg-pc-green text-pc-black font-bold px-6 py-3 rounded-xl transition-all duration-300 hover:bg-pc-green-dark hover:shadow-lg hover:shadow-pc-green/25 active:scale-95;
+    @apply bg-pc-green text-black font-bold px-6 py-3 rounded-xl transition-all duration-300 hover:bg-pc-green-dark hover:shadow-lg hover:shadow-pc-green/25 active:scale-95;
   }
 
   .btn-danger {

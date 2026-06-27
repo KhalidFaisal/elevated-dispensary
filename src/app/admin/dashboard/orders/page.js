@@ -250,7 +250,7 @@ export default function AdminOrdersPage() {
           {selectedOrders.length > 0 && (
             <button 
               onClick={exportSelectedOrders}
-              className="px-4 py-2 bg-pc-green text-pc-black rounded-xl font-bold hover:bg-pc-green/90 transition-colors text-sm"
+              className="px-4 py-2 bg-pc-green text-black rounded-xl font-bold hover:bg-pc-green/90 transition-colors text-sm"
             >
               Export Selected ({selectedOrders.length})
             </button>
@@ -269,7 +269,7 @@ export default function AdminOrdersPage() {
                 onClick={() => setStatusFilter(status)}
                 className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
                   statusFilter === status
-                    ? 'bg-pc-green text-pc-black'
+                    ? 'bg-pc-green text-black'
                     : 'text-pc-muted hover:text-white hover:bg-pc-card border border-pc-border'
                 }`}
               >

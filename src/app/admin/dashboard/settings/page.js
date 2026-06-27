@@ -314,7 +314,7 @@ export default function SettingsPage() {
               <button
                 type="button"
                 onClick={handleAutoDetectTimezone}
-                className="px-4 py-2 bg-pc-green/10 text-pc-green hover:bg-pc-green hover:text-pc-black rounded-xl text-sm font-bold transition-all whitespace-nowrap"
+                className="px-4 py-2 bg-pc-green/10 text-pc-green hover:bg-pc-green hover:text-black rounded-xl text-sm font-bold transition-all whitespace-nowrap"
               >
                 Auto-Detect
               </button>
