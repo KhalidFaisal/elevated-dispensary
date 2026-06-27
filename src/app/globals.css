@@ -26,10 +26,7 @@
     text-rendering: optimizeLegibility;
   }
 
-  /* Force white text class to be green in light theme */
-  .text-white {
-    color: #22c72c !important;
-  }
+
 
   /* Custom scrollbar */
   ::-webkit-scrollbar {
@@ -158,6 +155,11 @@
 @layer utilities {
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-pc-green to-pc-gold;
+  }
+
+  /* Force white text class to be green in light theme */
+  .text-white {
+    color: #22c72c !important;
   }
 
   .glow-emerald {
