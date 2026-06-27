@@ -136,17 +136,32 @@ export default function AdminOrdersPage() {
     const selectedOrderData = orders.filter(o => selectedOrders.includes(o.id));
 
     selectedOrderData.forEach(order => {
-      const itemNames = order.items?.map(i => i.product?.name || 'Unknown').join('; ') || '';
-      const quantity = order.items?.reduce((acc, i) => acc + i.quantity, 0) || 0;
-      const price = order.total.toFixed(2);
       const customerName = order.customerName || '';
 
-      rows.push([
-        `"${itemNames.replace(/"/g, '""')}"`,
-        quantity,
-        `"${price}"`,
-        `"${customerName.replace(/"/g, '""')}"`
-      ]);
+      if (order.items && order.items.length > 0) {
+        order.items.forEach(item => {
+          const itemName = item.product?.name || 'Unknown';
+          const quantity = item.quantity;
+          const lineTotal = (item.price * item.quantity).toFixed(2);
+          
+          rows.push([
+            `"${itemName.replace(/"/g, '""')}"`,
+            quantity,
+            `"${lineTotal}"`,
+            `"${customerName.replace(/"/g, '""')}"`
+          ]);
+        });
+      }
+
+      if (order.discountAmount > 0) {
+        const discountName = order.discountName || 'Discount';
+        rows.push([
+          `"Discount: ${discountName.replace(/"/g, '""')}"`,
+          1,
+          `"-${order.discountAmount.toFixed(2)}"`,
+          `"${customerName.replace(/"/g, '""')}"`
+        ]);
+      }
     });
 
     const csvContent = "data:text/csv;charset=utf-8," + rows.map(e => e.join(",")).join("\n");
