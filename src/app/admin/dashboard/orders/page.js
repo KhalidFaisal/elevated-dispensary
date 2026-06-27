@@ -12,6 +12,7 @@ export default function AdminOrdersPage() {
   const [statusFilter, setStatusFilter] = useState('ALL');
   const [expandedOrder, setExpandedOrder] = useState(null);
   const [copiedOrderId, setCopiedOrderId] = useState(null);
+  const [selectedOrders, setSelectedOrders] = useState([]);
 
   const [storeTimezone, setStoreTimezone] = useState('UTC');
 
@@ -108,6 +109,56 @@ export default function AdminOrdersPage() {
 
   const filtered = statusFilter === 'ALL' ? orders : orders.filter((o) => o.status === statusFilter);
 
+  const handleSelectAll = (e) => {
+    if (e.target.checked) {
+      setSelectedOrders(filtered.map(o => o.id));
+    } else {
+      setSelectedOrders([]);
+    }
+  };
+
+  const toggleSelectOrder = (e, orderId) => {
+    e.stopPropagation();
+    if (selectedOrders.includes(orderId)) {
+      setSelectedOrders(prev => prev.filter(id => id !== orderId));
+    } else {
+      setSelectedOrders(prev => [...prev, orderId]);
+    }
+  };
+
+  const exportSelectedOrders = () => {
+    if (selectedOrders.length === 0) return;
+    
+    const rows = [
+      ['Item name(s)', 'Quantity', 'Price', 'Customer Name']
+    ];
+
+    const selectedOrderData = orders.filter(o => selectedOrders.includes(o.id));
+
+    selectedOrderData.forEach(order => {
+      const itemNames = order.items?.map(i => i.product?.name || 'Unknown').join('; ') || '';
+      const quantity = order.items?.reduce((acc, i) => acc + i.quantity, 0) || 0;
+      const price = order.total.toFixed(2);
+      const customerName = order.customerName || '';
+
+      rows.push([
+        `"${itemNames.replace(/"/g, '""')}"`,
+        quantity,
+        `"${price}"`,
+        `"${customerName.replace(/"/g, '""')}"`
+      ]);
+    });
+
+    const csvContent = "data:text/csv;charset=utf-8," + rows.map(e => e.join(",")).join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `orders_export_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const formatDate = (dateStr) => {
     const d = new Date(dateStr);
     try {
@@ -129,9 +180,21 @@ export default function AdminOrdersPage() {
 
   return (
     <div className="animate-fade-in">
-      <div className="mb-8">
-        <h1 className="text-3xl font-black text-white">Orders</h1>
-        <p className="text-pc-muted">{orders.length} total orders</p>
+      <div className="mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-black text-white">Orders</h1>
+          <p className="text-pc-muted">{orders.length} total orders</p>
+        </div>
+        <div className="flex gap-2">
+          {selectedOrders.length > 0 && (
+            <button 
+              onClick={exportSelectedOrders}
+              className="px-4 py-2 bg-pc-green text-pc-black rounded-xl font-bold hover:bg-pc-green/90 transition-colors text-sm"
+            >
+              Export Selected ({selectedOrders.length})
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Status tabs */}
@@ -153,6 +216,20 @@ export default function AdminOrdersPage() {
           );
         })}
       </div>
+      
+      {filtered.length > 0 && (
+        <div className="mb-4 flex items-center">
+          <label className="flex items-center gap-3 text-sm text-pc-muted cursor-pointer hover:text-white transition-colors">
+            <input 
+              type="checkbox" 
+              className="w-4 h-4 rounded border-pc-border bg-pc-dark text-pc-green focus:ring-pc-green focus:ring-offset-pc-black cursor-pointer"
+              checked={selectedOrders.length > 0 && selectedOrders.length === filtered.length}
+              onChange={handleSelectAll}
+            />
+            <span className="font-medium">Select All</span>
+          </label>
+        </div>
+      )}
 
       {/* Orders list */}
       {filtered.length === 0 ? (
@@ -164,10 +241,20 @@ export default function AdminOrdersPage() {
           {filtered.map((order) => (
             <div key={order.id} className="glass-card overflow-hidden">
               {/* Order Header */}
-              <button
-                onClick={() => setExpandedOrder(expandedOrder === order.id ? null : order.id)}
-                className="w-full p-4 md:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-pc-card/30 transition-colors text-left"
-              >
+              <div className="flex w-full hover:bg-pc-card/30 transition-colors">
+                <div className="pl-4 md:pl-6 pt-5 md:pt-7 flex-shrink-0" onClick={(e) => toggleSelectOrder(e, order.id)}>
+                  <input 
+                    type="checkbox" 
+                    className="w-4 h-4 rounded border-pc-border bg-pc-dark text-pc-green focus:ring-pc-green focus:ring-offset-pc-black cursor-pointer"
+                    checked={selectedOrders.includes(order.id)}
+                    onChange={(e) => toggleSelectOrder(e, order.id)}
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                </div>
+                <button
+                  onClick={() => setExpandedOrder(expandedOrder === order.id ? null : order.id)}
+                  className="flex-1 p-4 md:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-left"
+                >
                 <div className="flex items-center gap-4">
                   <div>
                     <div className="flex items-center gap-3">
@@ -193,7 +280,8 @@ export default function AdminOrdersPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                   </svg>
                 </div>
-              </button>
+                </button>
+              </div>
 
               {/* Expanded details */}
               {expandedOrder === order.id && (
