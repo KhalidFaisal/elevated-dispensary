@@ -25,8 +25,14 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} ${customFont.variable} antialiased`}>
-      <body className="min-h-screen bg-pc-black text-white font-sans">
-        {children}
+      <body className="min-h-screen bg-pc-black text-white font-sans relative">
+        <div 
+          className="fixed inset-0 z-0 opacity-5 pointer-events-none bg-center bg-no-repeat bg-[length:300px_300px] sm:bg-[length:500px_500px]"
+          style={{ backgroundImage: "url('/Leaf-Logo.png')" }}
+        />
+        <div className="relative z-10">
+          {children}
+        </div>
       </body>
     </html>
   );
