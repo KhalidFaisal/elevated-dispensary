@@ -243,7 +243,7 @@ export default function AdminOrdersPage() {
           <label className="flex items-center gap-3 text-sm text-pc-muted cursor-pointer hover:text-white transition-colors">
             <input 
               type="checkbox" 
-              className="w-4 h-4 rounded border-pc-border bg-pc-dark text-pc-green focus:ring-pc-green focus:ring-offset-pc-black cursor-pointer"
+              className="modern-checkbox"
               checked={selectedOrders.length > 0 && selectedOrders.length === filtered.length}
               onChange={handleSelectAll}
             />
@@ -266,7 +266,7 @@ export default function AdminOrdersPage() {
                 <div className="pl-4 md:pl-6 pt-5 md:pt-7 flex-shrink-0" onClick={(e) => toggleSelectOrder(e, order.id)}>
                   <input 
                     type="checkbox" 
-                    className="w-4 h-4 rounded border-pc-border bg-pc-dark text-pc-green focus:ring-pc-green focus:ring-offset-pc-black cursor-pointer"
+                    className="modern-checkbox"
                     checked={selectedOrders.includes(order.id)}
                     onChange={(e) => toggleSelectOrder(e, order.id)}
                     onClick={(e) => e.stopPropagation()}
