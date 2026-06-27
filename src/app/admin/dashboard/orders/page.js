@@ -115,18 +115,28 @@ export default function AdminOrdersPage() {
   const filtered = orders.filter((o) => {
     if (statusFilter !== 'ALL' && o.status !== statusFilter) return false;
     
-    if (startDate) {
-      const orderDate = new Date(o.createdAt);
-      const sDate = new Date(startDate);
-      sDate.setHours(0, 0, 0, 0);
-      if (orderDate < sDate) return false;
-    }
-    
-    if (endDate) {
-      const orderDate = new Date(o.createdAt);
-      const eDate = new Date(endDate);
-      eDate.setHours(23, 59, 59, 999);
-      if (orderDate > eDate) return false;
+    if (startDate || endDate) {
+      try {
+        const formatter = new Intl.DateTimeFormat('en-US', {
+          timeZone: storeTimezone,
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        });
+        const parts = formatter.formatToParts(new Date(o.createdAt));
+        let y, m, d;
+        for (const p of parts) {
+          if (p.type === 'year') y = p.value;
+          if (p.type === 'month') m = p.value;
+          if (p.type === 'day') d = p.value;
+        }
+        const orderDateStr = `${y}-${m}-${d}`;
+        
+        if (startDate && orderDateStr < startDate) return false;
+        if (endDate && orderDateStr > endDate) return false;
+      } catch (e) {
+        console.error("Timezone formatting error", e);
+      }
     }
     
     return true;
