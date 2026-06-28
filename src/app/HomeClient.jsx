@@ -241,6 +241,7 @@ function Footer({ categories }) {
           </div>
           <p>© {new Date().getFullYear()} Holybuds. All rights reserved.</p>
         </div>
+      </div>
     </footer>
   );
 }
