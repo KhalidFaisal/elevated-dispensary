@@ -25,7 +25,8 @@ function CheckoutContent() {
   const [orderConfirm, setOrderConfirm] = useState(null);
 
   const isDelivery = form.deliveryMethod === 'DELIVERY';
-  const deliveryMinError = isDelivery && total < 100;
+  const deliveryFee = isDelivery && total < 100 ? 10 : 0;
+  const finalTotal = total + deliveryFee;
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -37,7 +38,6 @@ function CheckoutContent() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (deliveryMinError) return;
     
     setSubmitting(true);
     setError('');
@@ -211,20 +211,20 @@ function CheckoutContent() {
                 </div>
               </div>
 
-              {deliveryMinError && (
+              {deliveryFee > 0 && (
                 <div className="bg-pc-gold/10 border border-pc-gold/30 text-pc-gold p-4 rounded-xl flex items-center gap-3">
                   <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-                  <span className="text-sm">Delivery requires a minimum order of $100. Add ${(100 - total).toFixed(2)} more to your cart, or switch to Pickup.</span>
+                  <span className="text-sm">A $10 delivery fee applies to orders under $100. Add ${(100 - total).toFixed(2)} more to your cart for free delivery!</span>
                 </div>
               )}
 
               <button 
                 type="submit" 
-                disabled={submitting || deliveryMinError} 
+                disabled={submitting} 
                 className="btn-primary w-full text-lg py-4 disabled:opacity-50 disabled:cursor-not-allowed" 
                 id="place-order-btn"
               >
-                {submitting ? 'Placing Order...' : `Place Order — $${total.toFixed(2)}`}
+                {submitting ? 'Placing Order...' : `Place Order — $${finalTotal.toFixed(2)}`}
               </button>
             </form>
           </div>
@@ -299,9 +299,15 @@ function CheckoutContent() {
                     <span>-${discountAmount.toFixed(2)}</span>
                   </div>
                 )}
+                {deliveryFee > 0 && (
+                  <div className="flex justify-between text-pc-muted">
+                    <span>Delivery Fee</span>
+                    <span>${deliveryFee.toFixed(2)}</span>
+                  </div>
+                )}
                 <div className="flex justify-between text-white font-bold text-lg pt-2 border-t border-pc-border">
                   <span>Total</span>
-                  <span>${total.toFixed(2)}</span>
+                  <span>${finalTotal.toFixed(2)}</span>
                 </div>
               </div>
 

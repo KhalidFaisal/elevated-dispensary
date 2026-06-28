@@ -14,7 +14,7 @@ export default function FAQPage() {
     },
     {
       question: "Is there an order minimum?",
-      answer: "Yes, delivery services require a minimum order of $100. Orders below $100 are eligible for pickup only."
+      answer: "Delivery is free for orders over $100. Orders below $100 will incur a $10 delivery fee. There is no minimum for pickup."
     },
     {
       question: "What payment methods do you accept?",

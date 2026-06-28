@@ -120,11 +120,15 @@ export async function POST(request) {
       }
     }
 
-    const total = subtotal - bestDiscountAmount;
+    let total = subtotal - bestDiscountAmount;
+    let deliveryFee = 0;
 
     if (deliveryMethod === 'DELIVERY' && total < 100) {
-      return NextResponse.json({ error: 'Delivery orders must be at least $100 after discounts' }, { status: 400 });
+      deliveryFee = 10;
+      total += deliveryFee;
     }
+
+    let notes = data.notes || '';
 
     // Create order and decrement stock in a transaction
     const order = await prisma.$transaction(async (tx) => {
@@ -138,7 +142,7 @@ export async function POST(request) {
           total,
           discountName: bestDiscountName,
           discountAmount: bestDiscountAmount,
-          notes: data.notes || '',
+          notes,
           items: {
             create: itemsData.map(i => ({
               productId: i.productId,
@@ -184,6 +188,9 @@ export async function POST(request) {
         
         if (order.discountAmount > 0) {
           message += `*Discount:* -$${order.discountAmount.toFixed(2)} (${order.discountName})\n`;
+        }
+        if (deliveryFee > 0) {
+          message += `*Delivery Fee:* $${deliveryFee.toFixed(2)}\n`;
         }
         message += `*Total:* $${order.total.toFixed(2)}`;
 

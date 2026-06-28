@@ -137,8 +137,15 @@ export default function AdminOrdersPage() {
     order.items?.forEach(item => {
       text += `- ${item.product?.name || 'Unknown'} x${item.quantity} ($${(item.price * item.quantity).toFixed(2)})\n`;
     });
+    const itemsSubtotal = order.items?.reduce((sum, item) => sum + (item.price * item.quantity), 0) || 0;
+    const expectedTotal = itemsSubtotal - (order.discountAmount || 0);
+    const fee = Math.round((order.total - expectedTotal) * 100) / 100;
+
     if (order.discountAmount > 0) {
-      text += `Discount: -${order.discountAmount.toFixed(2)}\n`;
+      text += `Discount: -$${order.discountAmount.toFixed(2)}\n`;
+    }
+    if (fee > 0) {
+      text += `Delivery Fee: $${fee.toFixed(2)}\n`;
     }
     text += `Total: $${order.total.toFixed(2)}\n`;
     
@@ -458,6 +465,17 @@ export default function AdminOrdersPage() {
                           <p><span className="text-pc-muted">Address:</span> <span className="text-white">{order.deliveryAddress}</span></p>
                         )}
                         {order.notes && <p><span className="text-pc-muted">Notes:</span> <span className="text-white">{order.notes}</span></p>}
+                        {(() => {
+                          const itemsSubtotal = order.items?.reduce((sum, item) => sum + (item.price * item.quantity), 0) || 0;
+                          const expectedTotal = itemsSubtotal - (order.discountAmount || 0);
+                          const fee = Math.round((order.total - expectedTotal) * 100) / 100;
+                          if (fee > 0) {
+                            return (
+                              <p><span className="text-pc-muted">Delivery Fee:</span> <span className="text-white">${fee.toFixed(2)}</span></p>
+                            );
+                          }
+                          return null;
+                        })()}
                         {order.discountAmount > 0 && (
                           <div className="mt-2 pt-2 border-t border-pc-border/50">
                             <p className="text-pc-green font-semibold">

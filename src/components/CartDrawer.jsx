@@ -38,6 +38,36 @@ export default function CartDrawer() {
           </button>
         </div>
 
+        {/* Free Delivery Upscale */}
+        {items.length > 0 && (
+          <div className="bg-pc-card/50 p-4 border-b border-pc-border">
+            {(() => {
+              const amountAway = Math.max(0, 100 - total);
+              const progressPercent = Math.min(100, (total / 100) * 100);
+              return (
+                <>
+                  <p className="text-sm text-center mb-2 font-medium">
+                    {amountAway > 0 ? (
+                      <>You're <span className="text-pc-gold font-bold">${amountAway.toFixed(2)}</span> away from free delivery!</>
+                    ) : (
+                      <span className="text-pc-green font-bold flex items-center justify-center gap-1">
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+                        You've unlocked free delivery!
+                      </span>
+                    )}
+                  </p>
+                  <div className="w-full bg-pc-smoke rounded-full h-2 overflow-hidden">
+                    <div 
+                      className={`h-full transition-all duration-500 ease-out ${amountAway > 0 ? 'bg-pc-gold' : 'bg-pc-green'}`} 
+                      style={{ width: `${progressPercent}%` }}
+                    />
+                  </div>
+                </>
+              );
+            })()}
+          </div>
+        )}
+
         {/* Items */}
         <div className="flex-1 overflow-y-auto p-6">
           {items.length === 0 ? (
