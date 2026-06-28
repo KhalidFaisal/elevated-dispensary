@@ -86,7 +86,7 @@ export default function AdminSidebar({ onNavClick }) {
   };
 
   return (
-    <aside className="w-64 bg-pc-dark border-r border-pc-border h-full overflow-y-auto flex flex-col">
+    <aside className="w-full md:w-64 bg-pc-dark border-r border-pc-border h-full overflow-y-auto flex flex-col">
       {/* Logo */}
       <div className="p-6 border-b border-pc-border">
         <Link href="/" className="flex items-center justify-center py-2 group">

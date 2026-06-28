@@ -52,11 +52,11 @@ export default function AdminDashboardLayout({ children }) {
       </div>
 
       {/* Sidebar */}
-      <div className={`${sidebarOpen ? 'block' : 'hidden'} md:block z-40 shrink-0 h-full`}>
+      <div className={`${sidebarOpen ? 'flex-1' : 'hidden'} md:block z-40 shrink-0 md:h-full overflow-hidden`}>
         <AdminSidebar onNavClick={() => setSidebarOpen(false)} />
       </div>
 
-      <main className="flex-1 overflow-y-auto">
+      <main className={`${sidebarOpen ? 'hidden' : 'flex-1'} md:block overflow-y-auto`}>
         <div className="p-4 md:p-8 min-h-full">
           {children}
         </div>
