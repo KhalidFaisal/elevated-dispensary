@@ -256,20 +256,26 @@ export default function HomeClient({ deals, staffPicks, newArrivals, bestSellers
 
   useEffect(() => {
     // Attempt to load recent products from localStorage
-    try {
-      const orders = JSON.parse(localStorage.getItem('holybuds_recent_orders') || '[]');
-      const productMap = new Map();
-      orders.forEach(o => {
-        o.items?.forEach(i => {
-          if (i.product && !productMap.has(i.productId)) {
-            productMap.set(i.productId, i.product);
-          }
+    const loadRecentProducts = () => {
+      try {
+        const orders = JSON.parse(localStorage.getItem('holybuds_recent_orders') || '[]');
+        const productMap = new Map();
+        orders.forEach(o => {
+          o.items?.forEach(i => {
+            if (i.product && !productMap.has(i.productId)) {
+              productMap.set(i.productId, i.product);
+            }
+          });
         });
-      });
-      setRecentProducts(Array.from(productMap.values()).slice(0, 8));
-    } catch (e) {
-      console.error(e);
-    }
+        setRecentProducts(Array.from(productMap.values()).slice(0, 8));
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    // Defer state update to avoid synchronous cascade warning
+    const timeoutId = setTimeout(loadRecentProducts, 0);
+    return () => clearTimeout(timeoutId);
   }, []);
 
   return (
