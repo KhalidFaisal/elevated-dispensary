@@ -41,7 +41,7 @@ function ProductDetails({ product }) {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5">
             {/* Image Section */}
             <div className="lg:col-span-2 flex flex-col bg-pc-dark border-r border-pc-border">
-              <div className="relative aspect-square md:aspect-auto flex-1">
+              <div className="relative aspect-square w-full bg-pc-card/50 border-b border-pc-border">
                 {mainImage ? (
                   <Image
                     src={mainImage}
@@ -92,7 +92,7 @@ function ProductDetails({ product }) {
             <div className="lg:col-span-3 p-8 md:p-12 flex flex-col">
               <div className="mb-4">
                 <span className={product.category === 'FLOWER' ? 'badge-hybrid' : 'badge-edible'}>
-                  {product.category === 'FLOWER' ? 'Flowers' : 'Edible'}
+                  {product.category === 'FLOWER' ? 'Flowers' : (product.category?.charAt(0)?.toUpperCase() + product.category?.slice(1)?.toLowerCase()) || 'Product'}
                 </span>
               </div>
               
