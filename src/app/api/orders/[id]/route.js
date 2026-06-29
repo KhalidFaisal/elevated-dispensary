@@ -60,13 +60,47 @@ export async function PUT(request, { params }) {
         }
       }
 
-      return await tx.order.update({
+      const updatedOrder = await tx.order.update({
         where: { id },
         data: { status: data.status },
         include: {
           items: { include: { product: true } },
         },
       });
+
+      // TRIGGER GOOGLE SHEETS WEBHOOK ON COMPLETION
+      if (data.status === 'COMPLETED' && currentOrder.status !== 'COMPLETED') {
+        const webhookUrl = process.env.GOOGLE_SHEET_WEBHOOK_URL;
+        if (webhookUrl) {
+          try {
+            const itemsSubtotal = updatedOrder.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const rawDeliveryFee = updatedOrder.total + updatedOrder.discountAmount - itemsSubtotal;
+            const deliveryFee = rawDeliveryFee > 0 ? Math.round(rawDeliveryFee * 100) / 100 : 0;
+            
+            const rows = updatedOrder.items.map(item => {
+              const rowData = Array(11).fill(""); // A through K (0 to 10)
+              rowData[2] = item.product.name; // C column
+              rowData[3] = item.quantity; // D column
+              rowData[6] = updatedOrder.customerName; // G column
+              rowData[9] = updatedOrder.discountAmount > 0 ? updatedOrder.discountAmount : ""; // J column
+              rowData[10] = deliveryFee > 0 ? deliveryFee : ""; // K column
+              return rowData;
+            });
+
+            // Fire and forget
+            fetch(webhookUrl, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(rows)
+            }).catch(err => console.error("Webhook error:", err));
+
+          } catch (webhookErr) {
+            console.error('Failed to construct webhook payload:', webhookErr);
+          }
+        }
+      }
+
+      return updatedOrder;
     });
 
     return NextResponse.json(order);
