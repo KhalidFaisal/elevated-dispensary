@@ -53,7 +53,7 @@ export default function AnalyticsPage() {
     <div className="animate-fade-in space-y-8">
       <div>
         <h1 className="text-3xl font-black text-white">Analytics</h1>
-        <p className="text-pc-muted">Deep dive into your store's performance</p>
+        <p className="text-pc-muted">Deep dive into your store&apos;s performance</p>
       </div>
 
       {/* Summary Section */}
