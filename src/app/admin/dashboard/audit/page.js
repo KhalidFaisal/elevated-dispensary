@@ -86,7 +86,7 @@ export default function InventoryAuditPage() {
       )}
 
       {!loading && !error && data && (
-        <div className="space-y-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
           
           {/* Missing from Site */}
           <div className="glass-card p-6 border-red-900/50">
