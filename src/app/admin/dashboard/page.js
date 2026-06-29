@@ -139,7 +139,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Recent Orders */}
-        <div className="glass-card p-6 lg:col-span-2">
+        <div className="glass-card p-6 lg:col-span-1">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-bold text-white">Recent Orders</h2>
             <Link href="/admin/dashboard/orders" className="text-pc-green text-sm hover:text-pc-green-light transition-colors">
