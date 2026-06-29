@@ -122,8 +122,9 @@ export default function AnalyticsPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         
-        {/* Top Products */}
-        <div className="glass-card p-6">
+        <div className="space-y-8">
+          {/* Top Products */}
+          <div className="glass-card p-6">
           <h2 className="text-xl font-bold text-white mb-6">Top Selling Products</h2>
           {data.topProducts.length === 0 ? (
             <p className="text-pc-muted">No sales data yet.</p>
@@ -148,6 +149,33 @@ export default function AnalyticsPage() {
               ))}
             </div>
           )}
+        </div>
+
+        {/* Top Customers */}
+        {data.topCustomers && data.topCustomers.length > 0 && (
+          <div className="glass-card p-6">
+            <h2 className="text-xl font-bold text-white mb-6">Top Customers</h2>
+            <div className="space-y-4">
+              {data.topCustomers.map((customer, index) => (
+                <div key={customer.phone} className="flex items-center justify-between p-4 bg-pc-black rounded-xl border border-pc-border">
+                  <div className="flex items-center gap-4">
+                    <div className="w-8 h-8 rounded-full bg-pc-dark flex items-center justify-center font-bold text-pc-muted border border-pc-border">
+                      {index + 1}
+                    </div>
+                    <div>
+                      <p className="text-white font-bold">{customer.name}</p>
+                      <p className="text-xs text-pc-muted">{customer.phone}</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-white font-bold">{customer.ordersCount} orders</p>
+                    <p className="text-sm text-pc-gold">${customer.revenue.toFixed(2)}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
         </div>
 
         {/* Breakdowns */}

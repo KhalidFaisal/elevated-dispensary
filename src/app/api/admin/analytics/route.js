@@ -39,6 +39,7 @@ export async function GET(request) {
       categorySplit: {},
       discounts: {},
       topProducts: {},
+      topCustomers: {},
       trends: {
         last30Days: []
       }
@@ -95,6 +96,21 @@ export async function GET(request) {
         t.orders += 1;
       }
 
+      // Customers
+      if (order.customerPhone) {
+        if (!stats.topCustomers[order.customerPhone]) {
+          stats.topCustomers[order.customerPhone] = {
+            phone: order.customerPhone,
+            name: order.customerName,
+            ordersCount: 0,
+            revenue: 0
+          };
+        }
+        stats.topCustomers[order.customerPhone].ordersCount += 1;
+        stats.topCustomers[order.customerPhone].revenue += order.total;
+        stats.topCustomers[order.customerPhone].name = order.customerName; // Keep latest name
+      }
+
       // Items parsing (Categories & Products)
       for (const item of order.items) {
         const product = item.product;
@@ -137,11 +153,16 @@ export async function GET(request) {
     const topDiscountsArr = Object.entries(stats.discounts)
       .map(([name, data]) => ({ name, ...data }))
       .sort((a, b) => b.count - a.count);
+      
+    const topCustomersArr = Object.values(stats.topCustomers)
+      .sort((a, b) => b.revenue - a.revenue)
+      .slice(0, 10);
     
     return NextResponse.json({
       ...stats,
       topProducts: topProductsArr,
-      topDiscounts: topDiscountsArr
+      topDiscounts: topDiscountsArr,
+      topCustomers: topCustomersArr
     });
 
   } catch (error) {
