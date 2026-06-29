@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/components/CartProvider';
 import Navbar from '@/components/Navbar';
@@ -23,6 +23,11 @@ function CheckoutContent() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [orderConfirm, setOrderConfirm] = useState(null);
+
+  // Sync draft to localStorage so SessionTracker can pick it up
+  useEffect(() => {
+    localStorage.setItem('holybuds_checkout_draft', JSON.stringify(form));
+  }, [form]);
 
   const isDelivery = form.deliveryMethod === 'DELIVERY';
   const deliveryFee = isDelivery && total < 100 ? 10 : 0;
@@ -84,6 +89,7 @@ function CheckoutContent() {
 
       setOrderConfirm(order);
       clearCart();
+      localStorage.removeItem('holybuds_checkout_draft');
     } catch (err) {
       setError(err.message);
     } finally {

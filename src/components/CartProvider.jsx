@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import SessionTracker from '@/components/SessionTracker';
 
 const CartContext = createContext();
 
@@ -139,6 +140,7 @@ export function CartProvider({ children }) {
         total,
       }}
     >
+      <SessionTracker />
       {children}
     </CartContext.Provider>
   );

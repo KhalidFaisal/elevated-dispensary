@@ -93,3 +93,15 @@ model Category {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model ActiveSession {
+  id              String   @id @default(cuid())
+  sessionToken    String   @unique
+  lastActiveAt    DateTime @default(now())
+  cartTotal       Float    @default(0)
+  itemCount       Int      @default(0)
+  currentPath     String   @default("")
+  checkoutName    String?
+  checkoutPhone   String?
+  checkoutAddress String?
+}

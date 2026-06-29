@@ -9,11 +9,30 @@ export default function AdminDashboardPage() {
   const [stats, setStats] = useState({ products: 0, ordersToday: 0, revenue: 0, lowStock: 0 });
   const [recentOrders, setRecentOrders] = useState([]);
   const [lowStockProducts, setLowStockProducts] = useState([]);
+  const [liveShoppers, setLiveShoppers] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchData();
+    fetchLiveShoppers();
+    const interval = setInterval(fetchLiveShoppers, 15000);
+    return () => clearInterval(interval);
   }, []);
+
+  const fetchLiveShoppers = async () => {
+    try {
+      const token = localStorage.getItem('admin_token');
+      const res = await fetch('/api/admin/presence', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setLiveShoppers(Array.isArray(data) ? data : []);
+      }
+    } catch (e) {
+      console.error('Failed to fetch live shoppers', e);
+    }
+  };
 
   const fetchData = async () => {
     const token = localStorage.getItem('admin_token');
@@ -76,9 +95,51 @@ export default function AdminDashboardPage() {
         <StatsCard icon={<svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>} label="Low Stock" value={stats.lowStock} accent={stats.lowStock > 0 ? 'red' : 'emerald'} />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        {/* Live Shoppers */}
+        <div className="glass-card p-6 lg:col-span-1 border-pc-green/30 relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-4">
+            <span className="flex h-3 w-3 relative">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-pc-green opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-pc-green"></span>
+            </span>
+          </div>
+          <h2 className="text-lg font-bold text-white mb-4">Live Shoppers ({liveShoppers.length})</h2>
+          
+          {liveShoppers.length === 0 ? (
+            <p className="text-pc-muted text-sm py-4">No active shoppers in the last 2 mins</p>
+          ) : (
+            <div className="space-y-4">
+              {liveShoppers.map(session => (
+                <div key={session.id} className="p-4 rounded-xl bg-pc-dark/50 border border-pc-border">
+                  <div className="flex justify-between items-start mb-2">
+                    <p className="font-bold text-pc-green text-sm">
+                      {session.checkoutName || 'Anonymous Shopper'}
+                    </p>
+                    <p className="text-xs text-pc-muted font-mono">${session.cartTotal.toFixed(2)}</p>
+                  </div>
+                  {session.checkoutAddress && (
+                    <p className="text-xs text-white mb-2 leading-relaxed">
+                      <span className="text-pc-muted">Loc:</span> {session.checkoutAddress}
+                    </p>
+                  )}
+                  <div className="flex justify-between items-end">
+                    <p className="text-xs text-pc-muted">
+                      {session.itemCount} items
+                    </p>
+                    <span className="px-2 py-1 rounded bg-pc-smoke text-[10px] text-pc-muted truncate max-w-[120px]">
+                      {session.currentPath}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
         {/* Recent Orders */}
-        <div className="glass-card p-6">
+        <div className="glass-card p-6 lg:col-span-2">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-bold text-white">Recent Orders</h2>
             <Link href="/admin/dashboard/orders" className="text-pc-green text-sm hover:text-pc-green-light transition-colors">
