@@ -67,14 +67,18 @@ export default function InventoryStatsModal({ productId, productName, onClose })
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-4">
               <div className="bg-pc-black p-4 rounded-xl border border-pc-border">
-                <p className="text-xs text-pc-muted uppercase font-bold tracking-wider mb-1">Sold Today</p>
+                <p className="text-[10px] text-pc-muted uppercase font-bold tracking-wider mb-1">Today</p>
                 <p className="text-xl font-bold text-white">{stats.unitsSoldToday}</p>
               </div>
               <div className="bg-pc-black p-4 rounded-xl border border-pc-border">
-                <p className="text-xs text-pc-muted uppercase font-bold tracking-wider mb-1">Sold This Week</p>
+                <p className="text-[10px] text-pc-muted uppercase font-bold tracking-wider mb-1">This Week</p>
                 <p className="text-xl font-bold text-white">{stats.unitsSoldThisWeek}</p>
+              </div>
+              <div className="bg-pc-black p-4 rounded-xl border border-pc-border">
+                <p className="text-[10px] text-pc-muted uppercase font-bold tracking-wider mb-1">All Time</p>
+                <p className="text-xl font-bold text-pc-green">{stats.totalUnitsSold}</p>
               </div>
             </div>
 

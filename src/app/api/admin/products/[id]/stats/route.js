@@ -63,6 +63,7 @@ export async function GET(request, { params }) {
       lastSold,
       unitsSoldToday,
       unitsSoldThisWeek,
+      totalUnitsSold,
       averageDailySales,
       daysUntilOos,
       stock: product.stock
