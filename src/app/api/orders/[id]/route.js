@@ -118,8 +118,8 @@ export async function PUT(request, { params }) {
               return rowData;
             });
 
-            // Fire and forget
-            fetch(webhookUrl, {
+            // Await the webhook to prevent race conditions in Google Sheets during bulk updates
+            await fetch(webhookUrl, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify(rows)
