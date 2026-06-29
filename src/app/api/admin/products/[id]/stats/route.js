@@ -40,7 +40,7 @@ export async function GET(request, { params }) {
     startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay()); // Sunday
 
     for (const item of product.orderItems) {
-      if (item.order.status !== 'CANCELLED') {
+      if (item.order.status && !['CANCELLED', 'Cancelled', 'cancelled'].includes(item.order.status)) {
         const orderDate = new Date(item.order.createdAt);
         
         // last sold
