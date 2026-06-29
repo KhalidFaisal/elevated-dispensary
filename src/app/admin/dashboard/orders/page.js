@@ -157,6 +157,8 @@ export default function AdminOrdersPage() {
     text += `Method: ${order.deliveryMethod === 'DELIVERY' ? 'Delivery' : 'Pickup'}\n`;
     if (order.deliveryMethod === 'DELIVERY' && order.deliveryAddress) {
       text += `Address: ${order.deliveryAddress}\n`;
+    } else if (order.deliveryMethod === 'PICKUP' && order.deliveryAddress) {
+      text += `Town: ${order.deliveryAddress}\n`;
     }
     if (order.notes) {
       text += `Notes: ${order.notes}\n`;

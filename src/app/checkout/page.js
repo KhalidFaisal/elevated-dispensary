@@ -53,7 +53,7 @@ function CheckoutContent() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           ...form,
-          deliveryAddress: isDelivery ? `${form.deliveryAddress}, ${form.town}, ${form.zipCode}` : '',
+          deliveryAddress: isDelivery ? `${form.deliveryAddress}, ${form.town}, ${form.zipCode}` : form.town,
           items: items.map((item) => ({
             productId: item.id,
             quantity: item.quantity,
@@ -127,6 +127,12 @@ function CheckoutContent() {
             {orderConfirm.deliveryMethod === 'DELIVERY' && (
               <div className="flex justify-between text-pc-muted">
                 <span>Address</span>
+                <span className="text-white text-right max-w-[200px] break-words">{orderConfirm.deliveryAddress}</span>
+              </div>
+            )}
+            {orderConfirm.deliveryMethod === 'PICKUP' && orderConfirm.deliveryAddress && (
+              <div className="flex justify-between text-pc-muted">
+                <span>Town</span>
                 <span className="text-white text-right max-w-[200px] break-words">{orderConfirm.deliveryAddress}</span>
               </div>
             )}
@@ -228,6 +234,13 @@ function CheckoutContent() {
                         <input name="zipCode" value={form.zipCode} onChange={handleChange} required className="input-field" placeholder="10001" />
                       </div>
                     </div>
+                  </div>
+                )}
+
+                {!isDelivery && (
+                  <div>
+                    <label className="block text-sm font-medium text-pc-muted mb-1">What town are you coming from? *</label>
+                    <input name="town" value={form.town} onChange={handleChange} required className="input-field" placeholder="e.g. West Side, East Town..." />
                   </div>
                 )}
 

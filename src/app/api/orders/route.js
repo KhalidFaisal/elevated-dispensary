@@ -178,6 +178,8 @@ export async function POST(request) {
         
         if (order.deliveryMethod === 'DELIVERY') {
           message += `*Address:* ${order.deliveryAddress}\n`;
+        } else if (order.deliveryMethod === 'PICKUP' && order.deliveryAddress) {
+          message += `*Town:* ${order.deliveryAddress}\n`;
         }
         
         if (order.notes) {
