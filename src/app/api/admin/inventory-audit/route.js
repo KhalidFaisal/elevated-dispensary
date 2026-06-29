@@ -62,6 +62,21 @@ export async function GET(request) {
     const missingFromSheet = [];
     const stockMismatch = [];
 
+    // Ignored sheet names (headers, categories, etc.)
+    const ignoredSheetNames = [
+      'product name',
+      '1/2s',
+      '8ths',
+      'otehr',
+      'pre-rolls',
+      'vapes',
+      'wax/concentrates',
+      'edibles',
+      'clothing',
+      'wholesale',
+      'owed tracker'
+    ];
+
     // Build lookup maps (case insensitive trimming)
     const dbMap = new Map();
     dbProducts.forEach(p => {
@@ -77,6 +92,9 @@ export async function GET(request) {
 
     // Find Missing from Site & Stock Mismatches
     sheetMap.forEach((sheetItem, key) => {
+      // Skip ignored names
+      if (ignoredSheetNames.includes(key)) return;
+
       if (!dbMap.has(key)) {
         missingFromSite.push({
           name: sheetItem.name,
