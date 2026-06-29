@@ -76,13 +76,44 @@ export async function PUT(request, { params }) {
             const itemsSubtotal = updatedOrder.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             const rawDeliveryFee = updatedOrder.total + updatedOrder.discountAmount - itemsSubtotal;
             const deliveryFee = rawDeliveryFee > 0 ? Math.round(rawDeliveryFee * 100) / 100 : 0;
+            // Reconstruct discount per item
+            let discount = null;
+            if (updatedOrder.discountName) {
+              discount = await tx.discount.findFirst({ where: { name: updatedOrder.discountName } });
+            }
             
-            const rows = updatedOrder.items.map(item => {
+            let qualifyingTotal = 0;
+            let targetIds = [];
+            if (discount && discount.targetType === 'SPECIFIC_PRODUCTS' && discount.targetProductIds) {
+              try { targetIds = JSON.parse(discount.targetProductIds); } catch(e){}
+            }
+
+            const itemEligibility = updatedOrder.items.map(item => {
+              let eligible = false;
+              if (discount) {
+                if (discount.targetType === 'ENTIRE_ORDER') eligible = true;
+                else if (discount.targetType === 'CATEGORY' && item.product.category === discount.targetCategory) eligible = true;
+                else if (discount.targetType === 'SPECIFIC_PRODUCTS' && targetIds.includes(item.productId)) eligible = true;
+              }
+              const lineTotal = item.price * item.quantity;
+              if (eligible) qualifyingTotal += lineTotal;
+              return { ...item, eligible, lineTotal };
+            });
+
+            const rows = itemEligibility.map(item => {
+              let itemDiscount = 0;
+              if (item.eligible && qualifyingTotal > 0 && updatedOrder.discountAmount > 0) {
+                const proportion = item.lineTotal / qualifyingTotal;
+                itemDiscount = proportion * updatedOrder.discountAmount;
+              }
+              const finalLineTotal = item.lineTotal - itemDiscount;
+              const finalUnitPrice = finalLineTotal / item.quantity;
+
               const rowData = Array(11).fill(""); // A through K (0 to 10)
               rowData[2] = item.product.name; // C column
               rowData[3] = item.quantity; // D column
+              rowData[4] = Math.round(finalUnitPrice * 100) / 100; // E column (discounted unit price)
               rowData[6] = updatedOrder.customerName; // G column
-              rowData[9] = updatedOrder.discountAmount > 0 ? updatedOrder.discountAmount : ""; // J column
               rowData[10] = deliveryFee > 0 ? deliveryFee : ""; // K column
               return rowData;
             });
