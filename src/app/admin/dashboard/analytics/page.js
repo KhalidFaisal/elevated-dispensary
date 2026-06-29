@@ -120,11 +120,10 @@ export default function AnalyticsPage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
-        <div className="space-y-8">
-          {/* Top Products */}
-          <div className="glass-card p-6">
+        {/* Top Products */}
+        <div className="glass-card p-6">
           <h2 className="text-xl font-bold text-white mb-6">Top Selling Products</h2>
           {data.topProducts.length === 0 ? (
             <p className="text-pc-muted">No sales data yet.</p>
@@ -176,7 +175,6 @@ export default function AnalyticsPage() {
             </div>
           </div>
         )}
-        </div>
 
         {/* Breakdowns */}
         <div className="space-y-8">
