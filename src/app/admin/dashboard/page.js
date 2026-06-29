@@ -66,8 +66,10 @@ export default function AdminDashboardPage() {
   };
 
   useEffect(() => {
-    fetchData();
-    fetchLiveShoppers();
+    setTimeout(() => {
+      fetchData();
+      fetchLiveShoppers();
+    }, 0);
     const interval = setInterval(fetchLiveShoppers, 15000);
     return () => clearInterval(interval);
   }, []);
