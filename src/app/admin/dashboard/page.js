@@ -45,7 +45,8 @@ export default function AdminDashboardPage() {
 
       // Calculate stats
       const today = new Date().toDateString();
-      const ordersToday = orders.filter((o) => new Date(o.createdAt).toDateString() === today);
+      const validOrders = orders.filter(o => o.status && !['CANCELLED', 'Cancelled', 'cancelled'].includes(o.status));
+      const ordersToday = validOrders.filter((o) => new Date(o.createdAt).toDateString() === today);
       const revenue = ordersToday.reduce((sum, o) => sum + o.total, 0);
       const lowStock = products.filter((p) => p.stock <= 10);
 
