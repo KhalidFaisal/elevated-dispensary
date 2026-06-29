@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { requireAdmin } from '@/lib/auth';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request) {
   try {
     if (!requireAdmin(request)) {
@@ -18,7 +20,7 @@ export async function GET(request) {
     try {
       const response = await fetch(webhookUrl, {
         method: 'GET',
-        // Removed Content-Type header as it can break Apps Script redirects for GET requests
+        cache: 'no-store',
       });
       if (!response.ok) {
         const errorText = await response.text();
