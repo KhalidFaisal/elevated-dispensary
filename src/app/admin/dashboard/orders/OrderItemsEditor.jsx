@@ -24,7 +24,7 @@ export default function OrderItemsEditor({ order, token, onUpdated }) {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch('/api/admin/products', {
+      const res = await fetch('/api/products', {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (res.ok) {
