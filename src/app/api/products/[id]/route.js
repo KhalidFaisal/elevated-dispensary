@@ -26,28 +26,31 @@ export async function PUT(request, { params }) {
 
     const { id } = await params;
     const data = await request.json();
-    let imagesArr = [];
-    if (Array.isArray(data.images)) {
-      imagesArr = data.images;
-    } else if (data.image) {
-      imagesArr = [data.image];
+    const updateData = {};
+    if (data.name !== undefined) updateData.name = data.name;
+    if (data.category !== undefined) updateData.category = data.category;
+    if (data.price !== undefined) updateData.price = parseFloat(data.price);
+    if (data.weight !== undefined) updateData.weight = data.weight;
+    if (data.description !== undefined) updateData.description = data.description;
+    
+    if (data.images !== undefined || data.image !== undefined) {
+      let imagesArr = [];
+      if (Array.isArray(data.images)) {
+        imagesArr = data.images;
+      } else if (data.image) {
+        imagesArr = [data.image];
+      }
+      updateData.image = imagesArr.length > 0 ? imagesArr[0] : '';
+      updateData.images = JSON.stringify(imagesArr);
     }
-    const primaryImage = imagesArr.length > 0 ? imagesArr[0] : '';
+    
+    if (data.stock !== undefined) updateData.stock = parseInt(data.stock) || 0;
+    if (data.featured !== undefined) updateData.featured = data.featured;
+    if (data.isVisible !== undefined) updateData.isVisible = data.isVisible;
 
     const product = await prisma.product.update({
       where: { id },
-      data: {
-        name: data.name,
-        category: data.category,
-        price: parseFloat(data.price),
-        weight: data.weight || null,
-        description: data.description || '',
-        image: primaryImage,
-        images: JSON.stringify(imagesArr),
-        stock: parseInt(data.stock) || 0,
-        featured: data.featured || false,
-        isVisible: data.isVisible !== undefined ? data.isVisible : true,
-      },
+      data: updateData,
     });
 
     return NextResponse.json(product);

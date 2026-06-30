@@ -39,7 +39,7 @@ export default function InventoryAuditPage() {
     setSyncing(true);
     try {
       const token = localStorage.getItem('admin_token');
-      const res = await fetch(`/api/admin/products/${productId}`, {
+      const res = await fetch(`/api/products/${productId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

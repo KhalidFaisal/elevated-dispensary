@@ -74,7 +74,8 @@ export async function GET(request) {
       'edibles',
       'clothing',
       'wholesale',
-      'owed tracker'
+      'owed tracker',
+      'accessories'
     ];
 
     // Build lookup maps (case insensitive trimming)
