@@ -9,18 +9,20 @@ export default function CartDrawer() {
   const { items, isOpen, setIsOpen, removeItem, updateQuantity, subtotal, discountAmount, discountName, total, addItem } = useCart();
   const [upscales, setUpscales] = useState([]);
 
+  const cartItemIds = items.map(i => i.id);
+  const cartIdsString = cartItemIds.join(',');
+
   useEffect(() => {
-    fetch('/api/products/upscales')
+    fetch(`/api/products/upscales?cartIds=${cartIdsString}`)
       .then(res => res.json())
       .then(data => {
         if (Array.isArray(data)) setUpscales(data);
       })
       .catch(console.error);
-  }, []);
+  }, [cartIdsString]);
 
   if (!isOpen) return null;
 
-  const cartItemIds = items.map(i => i.id);
   const recommended = upscales.filter(u => !cartItemIds.includes(u.id)).slice(0, 3);
 
   return (
