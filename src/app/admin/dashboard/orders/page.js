@@ -16,7 +16,6 @@ function OrdersSearchParamsHandler({ onParams }) {
   }, [searchParams, onParams]);
   return null;
 }
-}
 
 const STATUSES = ['ALL', 'PENDING', 'PROCESSING', 'READY', 'COMPLETED', 'CANCELLED'];
 
