@@ -1,9 +1,20 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import ProductForm from '@/components/ProductForm';
 import CannabisIcon from '@/components/icons/CannabisIcon';
 import InventoryStatsModal from '@/components/InventoryStatsModal';
+
+function ProductsSearchParamsHandler({ onParams }) {
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    if (searchParams) {
+      onParams(searchParams);
+    }
+  }, [searchParams, onParams]);
+  return null;
+}
 
 export default function AdminProductsPage() {
   const [products, setProducts] = useState([]);
@@ -31,14 +42,6 @@ export default function AdminProductsPage() {
   useEffect(() => {
     fetchProducts();
     fetchCategories();
-
-    if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search);
-      const querySearch = params.get('search');
-      if (querySearch) {
-        setSearch(querySearch);
-      }
-    }
   }, []);
 
   const fetchCategories = async () => {
@@ -346,6 +349,14 @@ export default function AdminProductsPage() {
 
   return (
     <div className="animate-fade-in">
+      <Suspense fallback={null}>
+        <ProductsSearchParamsHandler onParams={(params) => {
+          const querySearch = params.get('search');
+          if (querySearch) {
+            setSearch(querySearch);
+          }
+        }} />
+      </Suspense>
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
         <div>
           <h1 className="text-3xl font-black text-white">Products</h1>

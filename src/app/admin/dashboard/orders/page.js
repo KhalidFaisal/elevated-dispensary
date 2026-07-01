@@ -1,10 +1,22 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import OrderStatusBadge from '@/components/OrderStatusBadge';
 import CannabisIcon from '@/components/icons/CannabisIcon';
 import CustomerFlags from '@/components/CustomerFlags';
 import OrderItemsEditor from './OrderItemsEditor';
+
+function OrdersSearchParamsHandler({ onParams }) {
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    if (searchParams) {
+      onParams(searchParams);
+    }
+  }, [searchParams, onParams]);
+  return null;
+}
+}
 
 const STATUSES = ['ALL', 'PENDING', 'PROCESSING', 'READY', 'COMPLETED', 'CANCELLED'];
 
@@ -22,16 +34,7 @@ export default function AdminOrdersPage() {
   const [endDate, setEndDate] = useState('');
   const ITEMS_PER_PAGE = 20;
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search);
-      const q = params.get('search');
-      if (q) setSearchQuery(q);
-      
-      const expandId = params.get('expand');
-      if (expandId) setExpandedOrder(expandId);
-    }
-  }, []);
+  // handled by OrdersSearchParamsHandler
 
   const [storeTimezone, setStoreTimezone] = useState('UTC');
 
@@ -331,14 +334,30 @@ export default function AdminOrdersPage() {
       return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
     }
   };
+  };
 
   if (loading) {
-    return <div className="flex items-center justify-center py-20"><div className="animate-pulse text-pc-muted">Loading orders...</div></div>;
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="animate-spin text-pc-green">
+          <CannabisIcon className="w-12 h-12" />
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="animate-fade-in">
-      <div className="mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+    <div className="max-w-7xl mx-auto pb-12">
+      <Suspense fallback={null}>
+        <OrdersSearchParamsHandler onParams={(params) => {
+          const q = params.get('search');
+          if (q) setSearchQuery(q);
+          const expandId = params.get('expand');
+          if (expandId) setExpandedOrder(expandId);
+        }} />
+      </Suspense>
+
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
         <div>
           <h1 className="text-3xl font-black text-white">Orders</h1>
           <p className="text-pc-muted">{orders.length} total orders</p>
