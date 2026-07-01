@@ -22,9 +22,25 @@ export async function GET(request) {
       orderBy: { createdAt: 'asc' }
     });
 
+    const settings = await prisma.siteSettings.findUnique({ where: { id: 'global' } });
+    const tz = settings?.timezone || 'UTC';
+
+    const getTzDateStr = (date) => {
+      const parts = new Intl.DateTimeFormat('en-US', {
+        timeZone: tz,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      }).formatToParts(date);
+      const y = parts.find(p => p.type === 'year').value;
+      const m = parts.find(p => p.type === 'month').value;
+      const d = parts.find(p => p.type === 'day').value;
+      return `${y}-${m}-${d}`;
+    };
+
     const now = new Date();
-    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const todayStr = getTzDateStr(now);
+    const currentMonthStr = todayStr.substring(0, 7);
 
     const stats = {
       summary: {
@@ -45,28 +61,36 @@ export async function GET(request) {
       }
     };
 
-    // Initialize 30-day trend array
+    // Initialize 30-day trend array using tz string tracking
     const trendMap = new Map();
-    for (let i = 29; i >= 0; i--) {
-      const d = new Date(startOfToday);
-      d.setDate(d.getDate() - i);
-      const dateStr = d.toISOString().split('T')[0];
-      trendMap.set(dateStr, { date: dateStr, revenue: 0, orders: 0 });
+    const msInDay = 86400000;
+    let currentMs = now.getTime();
+    const trendDates = [];
+    // Go backwards in time to collect 30 unique day strings in this timezone
+    while (trendDates.length < 30 && currentMs > (now.getTime() - 40 * msInDay)) {
+      const dStr = getTzDateStr(new Date(currentMs));
+      if (!trendDates.includes(dStr)) {
+        trendDates.push(dStr);
+      }
+      currentMs -= (msInDay / 2); // Step back 12 hours at a time to safely avoid DST skips
     }
+    trendDates.reverse();
+    trendDates.forEach(dateStr => trendMap.set(dateStr, { date: dateStr, revenue: 0, orders: 0 }));
 
     for (const order of orders) {
       const orderDate = new Date(order.createdAt);
-      const dateStr = orderDate.toISOString().split('T')[0];
+      const dateStr = getTzDateStr(orderDate);
+      const monthStr = dateStr.substring(0, 7);
 
       // Summary
       stats.summary.revenue.allTime += order.total;
       stats.summary.orders.allTime += 1;
 
-      if (orderDate >= startOfMonth) {
+      if (monthStr === currentMonthStr) {
         stats.summary.revenue.thisMonth += order.total;
         stats.summary.orders.thisMonth += 1;
       }
-      if (orderDate >= startOfToday) {
+      if (dateStr === todayStr) {
         stats.summary.revenue.today += order.total;
         stats.summary.orders.today += 1;
       }

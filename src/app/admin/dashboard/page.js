@@ -32,21 +32,38 @@ export default function AdminDashboardPage() {
     const headers = { Authorization: `Bearer ${token}` };
 
     try {
-      const [productsRes, ordersRes] = await Promise.all([
+      const [productsRes, ordersRes, settingsRes] = await Promise.all([
         fetch('/api/products'),
         fetch('/api/orders', { headers }),
+        fetch('/api/admin/settings', { headers }),
       ]);
 
       const productsData = await productsRes.json();
       const ordersData = await ordersRes.json();
+      const settingsData = await settingsRes.json();
 
       const products = Array.isArray(productsData) ? productsData : [];
       const orders = Array.isArray(ordersData) ? ordersData : [];
+      const tz = settingsData.timezone || 'UTC';
+
+      // Helper to format date in store timezone
+      const getTzDateStr = (date) => {
+        const parts = new Intl.DateTimeFormat('en-US', {
+          timeZone: tz,
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        }).formatToParts(date);
+        const y = parts.find(p => p.type === 'year').value;
+        const m = parts.find(p => p.type === 'month').value;
+        const d = parts.find(p => p.type === 'day').value;
+        return `${y}-${m}-${d}`;
+      };
 
       // Calculate stats
-      const today = new Date().toDateString();
+      const todayStr = getTzDateStr(new Date());
       const validOrders = orders.filter(o => o.status && !['CANCELLED', 'Cancelled', 'cancelled'].includes(o.status));
-      const ordersToday = validOrders.filter((o) => new Date(o.createdAt).toDateString() === today);
+      const ordersToday = validOrders.filter((o) => getTzDateStr(new Date(o.createdAt)) === todayStr);
       const revenue = ordersToday.reduce((sum, o) => sum + o.total, 0);
       const lowStock = products.filter((p) => p.stock <= 10);
 
