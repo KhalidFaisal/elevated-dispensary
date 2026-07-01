@@ -122,7 +122,7 @@ export default function AdminGlobalSearch() {
                   {results.orders.map(order => (
                     <div 
                       key={order.id} 
-                      onClick={() => { router.push(`/admin/dashboard/orders?expand=${order.id}`); setIsOpen(false); }}
+                      onClick={() => { router.push(`/admin/dashboard/orders?search=${encodeURIComponent(order.orderNumber)}&expand=${order.id}`); setIsOpen(false); }}
                       className="p-2 hover:bg-pc-black rounded-lg cursor-pointer flex justify-between items-center group transition-colors"
                     >
                       <div className="flex flex-col">
