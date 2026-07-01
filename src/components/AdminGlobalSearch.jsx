@@ -84,7 +84,7 @@ export default function AdminGlobalSearch() {
                   {results.products.map(product => (
                     <div 
                       key={product.id} 
-                      onClick={() => { router.push('/admin/dashboard/products'); setIsOpen(false); }}
+                      onClick={() => { router.push(`/admin/dashboard/products?search=${encodeURIComponent(product.name)}`); setIsOpen(false); }}
                       className="p-2 hover:bg-pc-black rounded-lg cursor-pointer flex justify-between items-center group transition-colors"
                     >
                       <span className="text-sm text-white group-hover:text-pc-green transition-colors">{product.name}</span>
@@ -103,9 +103,10 @@ export default function AdminGlobalSearch() {
                   {results.customers.map(customer => (
                     <div 
                       key={customer.customerPhone} 
-                      className="p-2 hover:bg-pc-black rounded-lg flex flex-col"
+                      onClick={() => { router.push(`/admin/dashboard/orders?search=${encodeURIComponent(customer.customerPhone)}`); setIsOpen(false); }}
+                      className="p-2 hover:bg-pc-black rounded-lg cursor-pointer flex flex-col group transition-colors"
                     >
-                      <span className="text-sm text-white">{customer.customerName}</span>
+                      <span className="text-sm text-white group-hover:text-pc-green transition-colors">{customer.customerName}</span>
                       <span className="text-xs text-pc-muted">{customer.customerPhone}</span>
                     </div>
                   ))}
@@ -121,7 +122,7 @@ export default function AdminGlobalSearch() {
                   {results.orders.map(order => (
                     <div 
                       key={order.id} 
-                      onClick={() => { router.push('/admin/dashboard/orders'); setIsOpen(false); }}
+                      onClick={() => { router.push(`/admin/dashboard/orders?expand=${order.id}`); setIsOpen(false); }}
                       className="p-2 hover:bg-pc-black rounded-lg cursor-pointer flex justify-between items-center group transition-colors"
                     >
                       <div className="flex flex-col">

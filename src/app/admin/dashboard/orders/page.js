@@ -16,10 +16,22 @@ export default function AdminOrdersPage() {
   const [copiedOrderId, setCopiedOrderId] = useState(null);
   const [selectedOrders, setSelectedOrders] = useState([]);
 
+  const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const ITEMS_PER_PAGE = 20;
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const q = params.get('search');
+      if (q) setSearchQuery(q);
+      
+      const expandId = params.get('expand');
+      if (expandId) setExpandedOrder(expandId);
+    }
+  }, []);
 
   const [storeTimezone, setStoreTimezone] = useState('UTC');
 
@@ -192,6 +204,14 @@ export default function AdminOrdersPage() {
   const filtered = orders.filter((o) => {
     if (statusFilter !== 'ALL' && o.status !== statusFilter) return false;
     
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      const matchName = o.customerName?.toLowerCase().includes(q);
+      const matchPhone = o.customerPhone?.toLowerCase().includes(q);
+      const matchNumber = o.orderNumber?.toLowerCase().includes(q);
+      if (!matchName && !matchPhone && !matchNumber) return false;
+    }
+    
     if (startDate || endDate) {
       try {
         const formatter = new Intl.DateTimeFormat('en-US', {
@@ -224,7 +244,7 @@ export default function AdminOrdersPage() {
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [statusFilter, startDate, endDate]);
+  }, [statusFilter, startDate, endDate, searchQuery]);
 
   const handleSelectAll = (e) => {
     if (e.target.checked) {
@@ -360,8 +380,16 @@ export default function AdminOrdersPage() {
       </div>
 
       {/* Filters */}
-      <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 mb-6">
-        <div className="flex flex-wrap gap-2">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 bg-pc-dark/50 p-4 rounded-xl border border-pc-border">
+        <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-auto">
+          <input 
+            type="text" 
+            placeholder="Search orders..." 
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="input-field w-full sm:w-64"
+          />
+          <div className="flex bg-pc-black rounded-lg p-1 border border-pc-border w-full sm:w-auto overflow-x-auto">
           {STATUSES.map((status) => {
             const count = status === 'ALL' ? orders.length : orders.filter((o) => o.status === status).length;
             return (

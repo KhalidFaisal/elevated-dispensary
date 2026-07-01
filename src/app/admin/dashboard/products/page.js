@@ -31,6 +31,14 @@ export default function AdminProductsPage() {
   useEffect(() => {
     fetchProducts();
     fetchCategories();
+
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const querySearch = params.get('search');
+      if (querySearch) {
+        setSearch(querySearch);
+      }
+    }
   }, []);
 
   const fetchCategories = async () => {
