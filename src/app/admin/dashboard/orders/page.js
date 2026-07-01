@@ -41,46 +41,46 @@ export default function AdminOrdersPage() {
 
 
 
-  const fetchSettings = async () => {
-    try {
-      const res = await fetch('/api/admin/settings', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setStoreTimezone(data.timezone || 'UTC');
-      }
-    } catch (e) {
-      console.error('Error fetching settings for timezone', e);
-    }
-  };
-
-  const fetchOrders = async () => {
-    try {
-      const res = await fetch('/api/orders', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setOrders(Array.isArray(data) ? data : []);
-      } else {
-        console.error('API error:', data.error);
-        setOrders([]);
-        if (res.status === 401) {
-          window.location.href = '/admin';
-        }
-      }
-    } catch (error) {
-      console.error('Error fetching orders:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const res = await fetch('/api/admin/settings', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setStoreTimezone(data.timezone || 'UTC');
+        }
+      } catch (e) {
+        console.error('Error fetching settings for timezone', e);
+      }
+    };
+
+    const fetchOrders = async () => {
+      try {
+        const res = await fetch('/api/orders', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json();
+        if (res.ok) {
+          setOrders(Array.isArray(data) ? data : []);
+        } else {
+          console.error('API error:', data.error);
+          setOrders([]);
+          if (res.status === 401) {
+            window.location.href = '/admin';
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchOrders();
     fetchSettings();
-  }, []);
+  }, [token]);
 
   const updateStatus = async (orderId, newStatus) => {
     try {
