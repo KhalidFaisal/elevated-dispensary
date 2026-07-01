@@ -348,7 +348,7 @@ export default function AdminOrdersPage() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto pb-12">
+    <div className="animate-fade-in">
       <Suspense fallback={null}>
         <OrdersSearchParamsHandler onParams={(params) => {
           const q = params.get('search');
@@ -358,7 +358,7 @@ export default function AdminOrdersPage() {
         }} />
       </Suspense>
 
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
+      <div className="mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
           <h1 className="text-3xl font-black text-white">Orders</h1>
           <p className="text-pc-muted">{orders.length} total orders</p>
