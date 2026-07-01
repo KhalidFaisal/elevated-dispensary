@@ -39,10 +39,7 @@ export default function AdminOrdersPage() {
 
   const token = typeof window !== 'undefined' ? localStorage.getItem('admin_token') : '';
 
-  useEffect(() => {
-    fetchOrders();
-    fetchSettings();
-  }, []);
+
 
   const fetchSettings = async () => {
     try {
@@ -79,6 +76,11 @@ export default function AdminOrdersPage() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchOrders();
+    fetchSettings();
+  }, []);
 
   const updateStatus = async (orderId, newStatus) => {
     try {
@@ -245,7 +247,8 @@ export default function AdminOrdersPage() {
   const paginatedOrders = filtered.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   useEffect(() => {
-    setCurrentPage(1);
+    const timer = setTimeout(() => setCurrentPage(1), 0);
+    return () => clearTimeout(timer);
   }, [statusFilter, startDate, endDate, searchQuery]);
 
   const handleSelectAll = (e) => {
@@ -332,7 +335,6 @@ export default function AdminOrdersPage() {
     } catch (e) {
       return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
     }
-  };
   };
 
   if (loading) {
@@ -576,7 +578,7 @@ export default function AdminOrdersPage() {
                         {order.discountAmount > 0 && (
                           <div className="mt-2 pt-2 border-t border-pc-border/50">
                             <p className="text-pc-green font-semibold">
-                              Discount Applied: <span className="text-white">"{order.discountName}" (-${order.discountAmount.toFixed(2)})</span>
+                              Discount Applied: <span className="text-white">&quot;{order.discountName}&quot; (-${order.discountAmount.toFixed(2)})</span>
                             </p>
                           </div>
                         )}
